@@ -9,11 +9,6 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    // This ensures auth routes use Node.js runtime instead of Edge
-    // which is necessary for Prisma and NextAuth to work properly
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
-  },
 };
 
 export default nextConfig;
