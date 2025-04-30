@@ -1,14 +1,10 @@
 'use client';
 
 import { UserTable } from './UsersTable';
-import React, { useEffect } from 'react';
-import { BsCalendarMonth } from 'react-icons/bs';
-import { MdOutlineCalendarMonth } from 'react-icons/md';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import {} from 'react-icons/fa';
 import { EyeIcon, Handshake, ShieldCheckIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 type UserData = {
   id: string;
@@ -30,11 +26,22 @@ interface UsersPageProps {
   };
 }
 
-const UsersPage = ({ users, stats }: UsersPageProps) => {
-  useEffect(() => {
-    AOS.init({});
-  }, []);
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
+const UsersPage = ({ users, stats }: UsersPageProps) => {
   const boxes = [
     {
       id: 1,
@@ -61,12 +68,24 @@ const UsersPage = ({ users, stats }: UsersPageProps) => {
 
   return (
     <>
-      <h1 className="text-xl font-semibold">Utilisateurs</h1>
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-xl font-semibold"
+      >
+        Utilisateurs
+      </motion.h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"
+      >
         {boxes.map((box) => (
-          <div
+          <motion.div
             key={box.id}
+            variants={item}
             className="flex-btn gap-4 rounded-xl border-[1px] border-border p-5"
           >
             <div className="w-3/4">
@@ -84,21 +103,20 @@ const UsersPage = ({ users, stats }: UsersPageProps) => {
             >
               <box.icon />
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      <div
-        data-aos="fade-up"
-        data-aos-duration="1000"
-        data-aos-delay="10"
-        data-aos-offset="200"
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
         className="my-8 rounded-xl border-[1px] border-border p-5"
       >
         <div className="mt-8 w-full overflow-x-scroll">
           <UserTable data={users} />
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

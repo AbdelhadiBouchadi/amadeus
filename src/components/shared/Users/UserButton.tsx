@@ -122,12 +122,7 @@ export function UserButton({ email, name, image }: UserButtonProps) {
               href="/settings"
               className="flex items-center gap-2 font-bold"
             >
-              <Settings
-                size={16}
-                strokeWidth={2}
-                className="opacity-60"
-                aria-hidden="true"
-              />
+              <Settings size={16} strokeWidth={2} aria-hidden="true" />
               <span>Profil</span>
             </Link>
           </DropdownMenuItem>
@@ -137,12 +132,7 @@ export function UserButton({ email, name, image }: UserButtonProps) {
           onClick={() => signOut({ callbackUrl: '/' })}
           className="flex items-center gap-2 cursor-pointer font-bold"
         >
-          <LogOut
-            size={16}
-            strokeWidth={2}
-            className="opacity-60"
-            aria-hidden="true"
-          />
+          <LogOut size={16} strokeWidth={2} aria-hidden="true" />
           <span>Se déconnecter</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

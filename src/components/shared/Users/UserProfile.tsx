@@ -25,7 +25,7 @@ export function UserProfile({ user, sessionUser }: UserProfileProps) {
         </h1>
       </div>
       <div className="grid grid-cols-12 gap-6 my-8 items-start">
-        <div className="col-span-12 lg:col-span-8 rounded-xl border-[1px] border-border p-6">
+        <div className="col-span-12 lg:col-span-8 rounded-xl border-[1px] p-6">
           <UserProfileForm user={user} sessionUser={sessionUser} />
         </div>
       </div>

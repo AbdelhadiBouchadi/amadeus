@@ -8,12 +8,15 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-modern-drawer/dist/index.css';
-import Sidebar from '@/components/shared/Sidebar';
 import { getUserByEmail } from '@/lib/actions/auth';
 import { requireUser } from '@/hooks';
 import { VisitorApprovalMessage } from '@/components/shared/Users/VisitorApprovalMessage';
 import { signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
+import Sidebar from '@/components/shared/Sidebar';
+import Header from '@/components/shared/Header';
+import SheetSidebar from '@/components/shared/Sidebar';
+import MobileSidebar from '@/components/shared/MobileSidebar';
 
 export const metadata: Metadata = {
   title: 'STELLANTIS | Système de Gestion Des Amadeus',
@@ -32,6 +35,12 @@ export default async function RootLayout({
 
   if (isVisitor) return <VisitorApprovalMessage />;
 
+  const userData = {
+    name: data?.firstName,
+    email: data?.email,
+    image: data?.image,
+  };
+
   return (
     <ThemeProvider
       attribute="class"
@@ -41,22 +50,12 @@ export default async function RootLayout({
     >
       <div className="grid xl:grid-cols-12 w-full bg-background dark:bg-background/20">
         <div className="col-span-2 xl:block hidden">
-          <Sidebar
-            user={{
-              name: data?.firstName,
-              email: data?.email,
-              image: data?.image,
-            }}
-          />
+          <Sidebar user={userData} />
         </div>
         <div className="col-span-10 xl:h-screen overflow-y-scroll relative">
-          {/* <Header
-          user={{
-            name: data?.name,
-            email: data?.email,
-            image: data?.image,
-          }}
-        /> */}
+          <div className="fixed top-4 left-4 z-50">
+            <MobileSidebar user={userData} />
+          </div>
           <div className="xs:px-8 px-2 pt-24">{children}</div>
         </div>
       </div>
