@@ -56,7 +56,7 @@ const SidebarLink = ({ title, path, icon }: SidebarLinkProps) => {
 
 const Sidebar = ({ user }: SidebarProps) => {
   return (
-    <div className=" xl:shadow-lg py-6 px-4 h-screen w-full border-r border-border flex flex-col justify-between">
+    <div className=" xl:shadow-lg py-6 px-4 h-screen w-full border-r border-subMain dark:border-border flex flex-col justify-between">
       <Link href="/" className="flex justify-center items-center">
         <Image
           src="/logo.png"

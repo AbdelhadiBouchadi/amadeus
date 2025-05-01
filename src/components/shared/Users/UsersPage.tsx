@@ -86,7 +86,11 @@ const UsersPage = ({ users, stats }: UsersPageProps) => {
           <motion.div
             key={box.id}
             variants={item}
-            className="flex-btn gap-4 rounded-xl border-[1px] border-border p-5"
+            className="flex-btn gap-4 rounded-xl border-[1px] p-5 backdrop-blur-md border-subMain dark:border-border shadow-md"
+            whileHover={{
+              y: -5,
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+            }}
           >
             <div className="w-3/4">
               <h2 className="text-sm font-bold uppercase">{box.title}</h2>
@@ -111,7 +115,7 @@ const UsersPage = ({ users, stats }: UsersPageProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="my-8 rounded-xl border-[1px] border-border p-5"
+        className="my-8 rounded-xl border-[1px] border-subMain dark:border-border p-5 shadow-md"
       >
         <div className="mt-8 w-full overflow-x-scroll">
           <UserTable data={users} />

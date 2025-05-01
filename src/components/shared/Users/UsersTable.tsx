@@ -44,7 +44,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data }) => {
         {data.map((user, index) => (
           <tr
             key={user.id}
-            className="border-b border-border hover:bg-greyed/20 transition"
+            className="border-b border-subMain dark:border-border hover:bg-greyed/20 transition"
           >
             <td className={tdClass}>
               {user.userId ? (

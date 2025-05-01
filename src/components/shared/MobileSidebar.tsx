@@ -74,7 +74,10 @@ const MobileSidebar = ({ user }: MobileSidebarProps) => {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0 w-[300px]">
+      <SheetContent
+        side="left"
+        className="p-0 w-[300px] bg-gradient-to-br from-main/20 via-subMain to-main/20 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 backdrop-blur-sm"
+      >
         <div className="py-6 px-4 h-full flex flex-col justify-between">
           <Link
             href="/"

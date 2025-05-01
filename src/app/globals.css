@@ -80,7 +80,7 @@
   }
 
   .shad-input {
-    @apply w-full bg-transparent text-sm mt-3 py-6 border rounded-lg focus:border focus:border-primary dark:text-white !important;
+    @apply w-full bg-transparent text-sm mt-3 py-6 border border-subMain dark:border-border rounded-lg focus:border focus:border-primary dark:text-white !important;
   }
 
   .shad-label {
