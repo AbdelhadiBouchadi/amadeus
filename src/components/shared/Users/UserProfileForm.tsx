@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User, UserRole } from '@prisma/client';
+import { UserRole } from '@/types';
 import {
   Form,
   FormControl,
@@ -33,6 +33,7 @@ import { useUploadThing } from '@/lib/uploadthing';
 import { updateUserProfile } from '@/lib/actions/auth';
 import { Eye, EyeOff } from 'lucide-react';
 import { formatUserRole } from '@/lib/utils';
+import { User } from '@prisma/client';
 
 interface UserProfileFormProps {
   user: User;
@@ -57,7 +58,7 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
       userId: user.userId || '',
       email: user.email || '',
       image: user.image || undefined,
-      role: user.role || UserRole.VISITOR,
+      role: (user.role as UserRole) || UserRole.VISITOR,
     },
   });
 
