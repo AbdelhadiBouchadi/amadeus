@@ -72,7 +72,7 @@ export const checklistSchema = z.object({
   subcategories: z
     .array(z.string())
     .min(1, 'Au moins une sous-catégorie est requise'),
-  subcategoryDetails: z.array(subcategoryDetailSchema).optional(),
+  subcategoryDetails: z.array(subcategoryDetailSchema).optional().default([]),
   images: z.array(z.string()).default([]),
 });
 

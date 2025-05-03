@@ -27,15 +27,51 @@ const SubcategoryDetailsList: React.FC<SubcategoryDetailsListProps> = ({
   onDetailChange,
 }) => {
   const getSubcategoryLabel = (subcategory: string): string => {
-    // This is a simplified version, you might need to update this based on your actual subcategory labels
-    return subcategory.replace(/_/g, ' ');
+    return subcategory
+      .replace(/_/g, ' ')
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   };
 
   const handleDetailChange = (updatedDetail: SubcategoryDetail) => {
-    const updatedDetails = subcategoryDetails.map((detail) =>
-      detail.subcategory === updatedDetail.subcategory ? updatedDetail : detail
+    const existingDetailIndex = subcategoryDetails.findIndex(
+      (detail) => detail.subcategory === updatedDetail.subcategory
     );
-    onDetailChange(updatedDetails);
+
+    let newDetails: SubcategoryDetail[];
+    if (existingDetailIndex >= 0) {
+      newDetails = [
+        ...subcategoryDetails.slice(0, existingDetailIndex),
+        updatedDetail,
+        ...subcategoryDetails.slice(existingDetailIndex + 1),
+      ];
+    } else {
+      newDetails = [...subcategoryDetails, updatedDetail];
+    }
+
+    // Ensure we only keep details for selected subcategories
+    newDetails = newDetails.filter((detail) =>
+      selectedSubcategories.includes(detail.subcategory)
+    );
+
+    // Add missing subcategories with default values
+    selectedSubcategories.forEach((subcategory) => {
+      if (!newDetails.some((detail) => detail.subcategory === subcategory)) {
+        newDetails.push({
+          subcategory,
+          um: false,
+          uc: false,
+          ums: false,
+          bl: false,
+          aviexp: false,
+          comment: '',
+        });
+      }
+    });
+
+    onDetailChange(newDetails);
   };
 
   // Group subcategories by category

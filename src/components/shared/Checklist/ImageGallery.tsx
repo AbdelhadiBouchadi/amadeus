@@ -47,7 +47,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
             <img
               src={image}
               alt={`Anomaly ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-fill"
             />
           </motion.div>
         ))}

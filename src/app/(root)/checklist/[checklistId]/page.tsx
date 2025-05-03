@@ -13,7 +13,7 @@ import {
   CheckSquare,
   AlertTriangle,
   Clock,
-  Plus,
+  Pencil,
 } from 'lucide-react';
 import {
   EDI_SUBCATEGORY_MAP,
@@ -33,6 +33,8 @@ import ImageGallery from '@/components/shared/Checklist/ImageGallery';
 import StatusBadges from '@/components/shared/Checklist/StatusBadge';
 import EDIDetailsModal from '@/components/shared/Checklist/EDIDetailsModal';
 import EDIDetailsButton from '@/components/shared/Checklist/EDIDetailsButton';
+import { Button } from '@/components/ui/button';
+import { DeleteChecklist } from '@/components/shared/Checklist/DeleteChecklist';
 
 type SubcategoryMap = {
   [AnomalyCategory.EDI]: typeof EDI_SUBCATEGORY_MAP;
@@ -91,14 +93,17 @@ export default async function ChecklistPage({
   const createdAt = new Date(data.createdAt);
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="rounded-xl shadow-sm border border-subMain dark:border-border p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold flex items-center gap-2">
+            <h1 className="text-lg lg:text-2xl font-bold flex items-center gap-2">
               <ClipboardCheck className="h-6 w-6 text-main" />
-              Checklist #{data.id.slice(0, 8)}
+              Checklist{' '}
+              <span className="font-bold ml-2 underline">
+                #{data.id.slice(0, 8)}
+              </span>
             </h1>
           </div>
 
@@ -286,6 +291,19 @@ export default async function ChecklistPage({
             </div>
           )}
         </div>
+      </div>
+      <div className="flex items-center gap-3 my-4 w-full">
+        <Button
+          asChild
+          variant="outline"
+          className="flex items-center gap-2 w-full"
+        >
+          <Link href={`/checklist/${data.id}/update`}>
+            <Pencil className="h-4 w-4" />
+            Modifier
+          </Link>
+        </Button>
+        <DeleteChecklist checklistId={data.id} className="w-full" />
       </div>
     </div>
   );

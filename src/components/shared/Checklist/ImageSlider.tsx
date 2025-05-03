@@ -28,7 +28,7 @@ export function ImageSlider({ images, onRemove }: ImageSliderProps) {
   return (
     <div className="relative w-full h-60 md:h-72 rounded-xl overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center transition-all duration-500"
+        className="absolute inset-0 bg-contain bg-no-repeat bg-center transition-all duration-500"
         style={{ backgroundImage: `url(${images[currentIndex]})` }}
       />
 

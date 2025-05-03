@@ -20,13 +20,23 @@ export default function AnomalyImagesUpload({
   onFieldChange,
   setFiles,
 }: AnomalyImagesUploadProps) {
+  // Keep track of which URLs are temporary previews vs permanent uploads
+  const [tempPreviewUrls, setTempPreviewUrls] = useState<string[]>([]);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
 
       // Create preview URLs for the dropped files
-      const newImageUrls = acceptedFiles.map((file) => convertFileToUrl(file));
-      onFieldChange([...imageUrls, ...newImageUrls]);
+      const newPreviewUrls = acceptedFiles.map((file) =>
+        convertFileToUrl(file)
+      );
+
+      // Track these as temporary preview URLs
+      setTempPreviewUrls((prev) => [...prev, ...newPreviewUrls]);
+
+      // Add the preview URLs to the field value
+      onFieldChange([...imageUrls, ...newPreviewUrls]);
     },
     [imageUrls, onFieldChange, setFiles]
   );
@@ -38,14 +48,29 @@ export default function AnomalyImagesUpload({
   });
 
   const removeImage = (index: number) => {
+    const urlToRemove = imageUrls[index];
     const newImageUrls = [...imageUrls];
     newImageUrls.splice(index, 1);
     onFieldChange(newImageUrls);
 
+    // If it's a temp preview URL, remove it from that list too
+    if (tempPreviewUrls.includes(urlToRemove)) {
+      setTempPreviewUrls((prev) => prev.filter((url) => url !== urlToRemove));
+    }
+
     setFiles((prevFiles) => {
-      const newFiles = [...prevFiles];
-      newFiles.splice(index, 1);
-      return newFiles;
+      // Only remove file if it corresponds to a temp preview
+      if (tempPreviewUrls.includes(urlToRemove)) {
+        const newFiles = [...prevFiles];
+        // Find the index of the file that matches this URL
+        const fileIndex =
+          newImageUrls.length >= index ? index : prevFiles.length - 1;
+        if (fileIndex >= 0) {
+          newFiles.splice(fileIndex, 1);
+        }
+        return newFiles;
+      }
+      return prevFiles;
     });
   };
 
@@ -62,7 +87,7 @@ export default function AnomalyImagesUpload({
           <p className="mb-4">SVG, PNG, JPG</p>
           <Button
             type="button"
-            className="bg-gray-100/20 dark:bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl border border-subMain dark:border-border my-4"
+            className="bg-gray-300 dark:bg-gray-900 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl border border-subMain dark:border-border my-4 "
             variant="outline"
           >
             Choisir à partir de l'appareil

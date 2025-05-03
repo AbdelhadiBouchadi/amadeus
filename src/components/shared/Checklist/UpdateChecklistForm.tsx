@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnomalyCategory, SubcategoryDetail } from '@/types';
+import { AnomalyCategory, ChecklistData, SubcategoryDetail } from '@/types';
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { createChecklist } from '@/lib/actions/checklist';
+import { updateChecklist } from '@/lib/actions/checklist';
 import { ChecklistFormValues, checklistSchema } from '@/lib/validator';
 import { getSubcategoriesForCategory } from '@/constants';
 import toast from 'react-hot-toast';
@@ -23,110 +23,147 @@ import SummaryCard from './SummaryCard';
 import SubmitButton from '../SubmitButton';
 import { Button } from '@/components/ui/button';
 import { CheckCircle as CircleCheck, History } from 'lucide-react';
-import AnomalyImagesUpload from './AnomalyImagesUploader';
 import { useUploadThing } from '@/lib/uploadthing';
 import SubcategoryDetailsList from './SubcategoryDetailsList';
+import { useRouter } from 'next/navigation';
+import { isBlobUrl } from '@/lib/utils';
+import AnomalyImagesUpload from './AnomalyImagesUploader';
 
-const ChecklistForm = () => {
+interface UpdateChecklistFormProps {
+  checklist: ChecklistData;
+}
+
+const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
+  checklist,
+}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [startTime] = useState(Date.now());
+  const router = useRouter();
 
   const { startUpload } = useUploadThing('imageUploader');
 
   const form = useForm<ChecklistFormValues>({
     resolver: zodResolver(checklistSchema),
     defaultValues: {
-      codeRoute: '',
-      cofor: '',
-      blNumber: '',
-      reference: '',
-      matricule: '',
-      categories: [],
-      subcategories: [],
-      subcategoryDetails: [],
-      images: [],
+      codeRoute: checklist.codeRoute,
+      cofor: checklist.cofor,
+      blNumber: checklist.blNumber,
+      reference: checklist.reference,
+      matricule: checklist.matricule,
+      categories: checklist.categories,
+      subcategories: checklist.subcategories || [],
+      subcategoryDetails: checklist.subcategoryDetails.map((detail) => ({
+        subcategory: detail.subcategory,
+        um: detail.um || false,
+        uc: detail.uc || false,
+        ums: detail.ums || false,
+        bl: detail.bl || false,
+        aviexp: detail.aviexp || false,
+        comment: detail.comment || '',
+        referenceIncoherence: detail.referenceIncoherence || '',
+        codeEmballageBL: detail.codeEmballageBL || '',
+        codeEmballageLivre: detail.codeEmballageLivre || '',
+        quantite: detail.quantite || '',
+        numEtiquette: detail.numEtiquette || '',
+      })),
+      images: checklist.images || [],
     },
   });
 
-  const selectedCategories = form.watch('categories');
-  const selectedSubcategories = form.watch('subcategories');
-  const subcategoryDetails = form.watch('subcategoryDetails') || [];
+  const selectedCategories = form.watch('categories') || [];
+  const selectedSubcategories = form.watch('subcategories') || [];
+  const currentImages = form.watch('images') || [];
 
-  // Initialize subcategory details when subcategories change
   useEffect(() => {
-    const existingDetails = new Set(
-      subcategoryDetails.map((detail) => detail.subcategory)
+    if (selectedSubcategories.length === 0) {
+      form.setValue('subcategoryDetails', [], { shouldValidate: true });
+      return;
+    }
+
+    const currentDetails = form.getValues('subcategoryDetails') || [];
+    const existingDetails = new Map(
+      currentDetails.map((detail) => [detail.subcategory, detail])
     );
 
-    const newDetails: SubcategoryDetail[] = [...subcategoryDetails];
-
-    selectedSubcategories.forEach((subcategory) => {
-      if (!existingDetails.has(subcategory)) {
-        newDetails.push({
-          subcategory,
-          um: false,
-          uc: false,
-          ums: false,
-          bl: false,
-          aviexp: false,
-          comment: '',
-        });
+    const newDetails = selectedSubcategories.map((subcategory) => {
+      const existing = existingDetails.get(subcategory);
+      if (existing) {
+        return existing;
       }
+      return {
+        subcategory,
+        um: false,
+        uc: false,
+        ums: false,
+        bl: false,
+        aviexp: false,
+        comment: '',
+        referenceIncoherence: '',
+        codeEmballageBL: '',
+        codeEmballageLivre: '',
+        quantite: '',
+        numEtiquette: '',
+      };
     });
 
-    // Remove details for subcategories that are no longer selected
-    const filteredDetails = newDetails.filter((detail) =>
-      selectedSubcategories.includes(detail.subcategory)
-    );
-
-    if (filteredDetails.length !== subcategoryDetails.length) {
-      form.setValue('subcategoryDetails', filteredDetails);
-    }
-  }, [selectedSubcategories, form, subcategoryDetails]);
+    form.setValue('subcategoryDetails', newDetails, { shouldValidate: true });
+  }, [selectedSubcategories, form]);
 
   const onSubmit = async (data: ChecklistFormValues) => {
     try {
       setIsSubmitting(true);
 
-      let uploadedImageUrls = data.images || [];
+      // Filter out blob URLs from current images
+      const permanentImageUrls = data.images.filter((url) => !isBlobUrl(url));
 
+      let finalImageUrls = [...permanentImageUrls];
+
+      // Only upload files if there are any
       if (files.length > 0) {
         const uploadedImages = await startUpload(files);
-
-        if (!uploadedImages) {
-          return;
+        if (uploadedImages) {
+          finalImageUrls = [
+            ...finalImageUrls,
+            ...uploadedImages.map((img) => img.url),
+          ];
         }
-
-        uploadedImageUrls = uploadedImages.map((img) => img.url);
       }
 
-      const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+      const formattedSubcategoryDetails =
+        data.subcategoryDetails?.map((detail) => ({
+          ...detail,
+          um: detail.um || false,
+          uc: detail.uc || false,
+          ums: detail.ums || false,
+          bl: detail.bl || false,
+          aviexp: detail.aviexp || false,
+          comment: detail.comment || '',
+          referenceIncoherence: detail.referenceIncoherence || '',
+          codeEmballageBL: detail.codeEmballageBL || '',
+          codeEmballageLivre: detail.codeEmballageLivre || '',
+          quantite: detail.quantite || '',
+          numEtiquette: detail.numEtiquette || '',
+        })) || [];
 
-      // Submit only the properties that are expected in the CreateChecklistInput interface
-      const result = await createChecklist({
-        codeRoute: data.codeRoute,
-        cofor: data.cofor,
-        blNumber: data.blNumber,
-        reference: data.reference,
-        matricule: data.matricule,
-        categories: data.categories,
-        subcategories: data.subcategories,
-        subcategoryDetails: data.subcategoryDetails || [],
-        images: uploadedImageUrls,
-        timeSpent,
-      });
+      const formattedData = {
+        ...data,
+        images: finalImageUrls,
+        subcategories: data.subcategories || [],
+        subcategoryDetails: formattedSubcategoryDetails,
+      };
+
+      const result = await updateChecklist(checklist.id, formattedData);
 
       if (result.success) {
-        form.reset();
-        toast.success('Votre checklist a été créée avec succès');
+        toast.success('Checklist mise à jour avec succès');
+        router.push(`/checklist/${checklist.id}`);
       } else {
-        console.error('Failed to submit checklist:', result.error);
-        toast.error('Une erreur est survenue lors de la création.');
+        console.error('Failed to update checklist:', result.error);
+        toast.error('Une erreur est survenue lors de la mise à jour.');
       }
     } catch (error) {
-      console.error('Error submitting checklist:', error);
-      toast.error('Erreur lors de la soumission du formulaire.');
+      console.error('Error updating checklist:', error);
+      toast.error('Erreur lors de la mise à jour du formulaire.');
     } finally {
       setIsSubmitting(false);
     }
@@ -147,11 +184,13 @@ const ChecklistForm = () => {
   const handleSubcategoryDetailsChange = (
     updatedDetails: SubcategoryDetail[]
   ) => {
-    form.setValue('subcategoryDetails', updatedDetails);
+    form.setValue('subcategoryDetails', updatedDetails, {
+      shouldValidate: true,
+    });
   };
 
   return (
-    <div className="min-h-screen p-4 sm:p-6">
+    <div className="min-h-screen sm:p-6">
       <div className="max-w-5xl mx-auto">
         <Form {...form}>
           <form
@@ -159,7 +198,9 @@ const ChecklistForm = () => {
             className="space-y-6 animate-fadeIn"
           >
             <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300">
-              <h2 className="text-xl font-semibold mb-6">Nouvelle Checklist</h2>
+              <h2 className="text-xl font-semibold mb-6">
+                Modifier la Checklist
+              </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <FormField
@@ -275,7 +316,10 @@ const ChecklistForm = () => {
                       <FormControl>
                         <MultiSubcategorySelect
                           value={field.value}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            field.onChange(value);
+                            form.trigger('subcategories');
+                          }}
                           categories={selectedCategories as AnomalyCategory[]}
                         />
                       </FormControl>
@@ -336,22 +380,22 @@ const ChecklistForm = () => {
               </div>
             )}
 
-            <div className="flex justify-end space-x-3">
+            <div className="flex items-center space-x-3 w-full">
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => form.reset()}
-                className="px-6 rounded-md  w-full"
+                onClick={() => router.back()}
+                className="sm:px-6 rounded-md transition-colors w-full"
               >
                 <History className="mr-2 size-5" />
-                Réinitialiser
+                Annuler
               </Button>
               <SubmitButton
                 isLoading={isSubmitting}
-                className="px-6 rounded-md w-full"
+                className="sm:px-6 rounded-md w-full"
               >
                 <CircleCheck className="mr-2 size-5" />
-                Enregistrer la Checklist
+                Mettre à jour
               </SubmitButton>
             </div>
           </form>
@@ -361,4 +405,4 @@ const ChecklistForm = () => {
   );
 };
 
-export default ChecklistForm;
+export default UpdateChecklistForm;

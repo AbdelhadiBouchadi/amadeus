@@ -48,7 +48,7 @@ export const DeleteChecklist: React.FC<DeleteChecklistProps> = ({
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
             Cette action ne peut pas être annulée. Cela supprimera
-            définitivement l'utilisateur et toutes les données associées.
+            définitivement la checklist et toutes les données associées.
           </AlertDialogDescription>
         </AlertDialogHeader>
 

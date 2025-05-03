@@ -214,3 +214,7 @@ export function getCategoryColor(category: AnomalyCategory): string[] {
 
   return colorMap[category] || ['bg-gray-500', 'text-gray-500'];
 }
+
+export function isBlobUrl(url: string): boolean {
+  return url.startsWith('blob:');
+}
