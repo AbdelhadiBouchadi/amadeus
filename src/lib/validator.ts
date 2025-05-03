@@ -52,6 +52,12 @@ const subcategoryDetailSchema = z.object({
   bl: z.boolean().default(false),
   aviexp: z.boolean().default(false),
   comment: z.string().optional(),
+  // New fields for INCOHERENCE_CONSTITUTION_PALETTE_EDI
+  referenceIncoherence: z.string().optional(),
+  codeEmballageBL: z.string().optional(),
+  codeEmballageLivre: z.string().optional(),
+  quantite: z.string().optional(),
+  numEtiquette: z.string().optional(),
 });
 
 export const checklistSchema = z.object({

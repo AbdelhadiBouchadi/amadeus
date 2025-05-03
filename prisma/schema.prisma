@@ -181,6 +181,12 @@ model SubcategoryDetail {
   bl          Boolean   @default(false)
   aviexp      Boolean   @default(false)
   comment     String?
+  // Conditional rendering when INCOHERENCE_CONSTITUTION_PALETTE_EDI is selected
+  referenceIncoherence  String?
+  codeEmballageBL    String?
+  codeEmballageLivre String?
+  quantite           String?
+  numEtiquette       String?
   checklist   Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
 
   @@unique([checklistId, subcategory])

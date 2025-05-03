@@ -13,6 +13,7 @@ import {
   CheckSquare,
   AlertTriangle,
   Clock,
+  Plus,
 } from 'lucide-react';
 import {
   EDI_SUBCATEGORY_MAP,
@@ -25,11 +26,13 @@ import {
   CATEGORY_COLORS,
   getSubcategoriesForCategory,
 } from '@/constants';
-import { SubcategoryInfo } from '@/types';
+import { EDISubcategory, SubcategoryInfo } from '@/types';
 import Link from 'next/link';
 import { AnomalyCategory } from '@/types';
 import ImageGallery from '@/components/shared/Checklist/ImageGallery';
 import StatusBadges from '@/components/shared/Checklist/StatusBadge';
+import EDIDetailsModal from '@/components/shared/Checklist/EDIDetailsModal';
+import EDIDetailsButton from '@/components/shared/Checklist/EDIDetailsButton';
 
 type SubcategoryMap = {
   [AnomalyCategory.EDI]: typeof EDI_SUBCATEGORY_MAP;
@@ -229,6 +232,9 @@ export default async function ChecklistPage({
                               (detail) => detail.subcategory === subcategory
                             );
                             const title = info?.label || subcategory;
+                            const isEDIIncoherence =
+                              subcategory ===
+                              EDISubcategory.INCOHERENCE_CONSTITUTION_PALETTE_EDI;
 
                             return (
                               <tr
@@ -252,6 +258,11 @@ export default async function ChecklistPage({
                                     comment={details?.comment || undefined}
                                     title={title}
                                   />
+                                </td>
+                                <td className="px-4 py-2">
+                                  {isEDIIncoherence && details && (
+                                    <EDIDetailsButton details={details} />
+                                  )}
                                 </td>
                               </tr>
                             );

@@ -98,6 +98,11 @@ export interface SubcategoryDetail {
   bl: boolean;
   aviexp: boolean;
   comment?: string;
+  referenceIncoherence?: string;
+  codeEmballageBL?: string;
+  codeEmballageLivre?: string;
+  quantite?: string;
+  numEtiquette?: string;
 }
 
 // Type for category to subcategory map

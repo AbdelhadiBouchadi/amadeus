@@ -72,7 +72,10 @@ export function UserButton({ email, name, image }: UserButtonProps) {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end">
+      <DropdownMenuContent
+        className="w-56 bg-gradient-to-br from-main/20 via-subMain to-main/20 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+        align="end"
+      >
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="truncate text-sm font-bold text-foreground">
             {name || 'User'}
@@ -87,7 +90,7 @@ export function UserButton({ email, name, image }: UserButtonProps) {
             Mode
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
-            <DropdownMenuSubContent className="font-bold">
+            <DropdownMenuSubContent className="font-bold bg-gradient-to-br from-main/20 via-subMain to-main/20 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
               <DropdownMenuItem
                 onClick={() => setTheme('system')}
                 className="cursor-pointer"

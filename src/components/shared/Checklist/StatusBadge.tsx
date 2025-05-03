@@ -63,7 +63,7 @@ const StatusBadges: React.FC<StatusBadgesProps> = ({
               className={
                 status.active
                   ? ''
-                  : 'text-gray-400 dark:text-gray-500 border-gray-300 dark:border-gray-700'
+                  : 'text-secondary-foreground/40 dark:text-gray-500 border-subMain dark:border-border'
               }
             >
               {status.label}

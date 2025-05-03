@@ -57,17 +57,17 @@ const CommentModal: React.FC<CommentModalProps> = ({
           transition={{ duration: 0.2 }}
         >
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md overflow-hidden shadow-xl"
+            className="bg-greyed dark:bg-gray-800 rounded-lg w-full max-w-md overflow-hidden shadow-xl"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-4 border-b border-subMain dark:border-border">
               <h3 className="text-lg font-semibold">{title}</h3>
               <button
                 onClick={onClose}
-                className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="rounded-full p-1 hover:bg-subMain dark:hover:bg-border transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>

@@ -44,6 +44,12 @@ export async function createChecklist(data: CreateChecklistInput) {
             bl: detail.bl,
             aviexp: detail.aviexp,
             comment: detail.comment,
+            // New fields for INCOHERENCE_CONSTITUTION_PALETTE_EDI
+            referenceIncoherence: detail.referenceIncoherence,
+            codeEmballageBL: detail.codeEmballageBL,
+            codeEmballageLivre: detail.codeEmballageLivre,
+            quantite: detail.quantite,
+            numEtiquette: detail.numEtiquette,
           })),
         },
       },
@@ -104,6 +110,12 @@ export async function updateChecklist(
                 bl: detail.bl,
                 aviexp: detail.aviexp,
                 comment: detail.comment,
+                // New fields for INCOHERENCE_CONSTITUTION_PALETTE_EDI
+                referenceIncoherence: detail.referenceIncoherence,
+                codeEmballageBL: detail.codeEmballageBL,
+                codeEmballageLivre: detail.codeEmballageLivre,
+                quantite: detail.quantite,
+                numEtiquette: detail.numEtiquette,
               })),
             }
           : undefined,
