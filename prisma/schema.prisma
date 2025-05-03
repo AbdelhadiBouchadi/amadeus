@@ -14,16 +14,16 @@ datasource db {
 }
 
 enum UserRole {
-    MONITOR
-    VISITOR
-    ADMIN
+  MONITOR
+  VISITOR
+  ADMIN
 }
 
 model User {
   id             String          @id @default(uuid())
-  userId          String?         @unique
-  firstName           String?
-  lastName           String?
+  userId         String?         @unique
+  firstName      String?
+  lastName       String?
   email          String?         @unique
   hashedPassword String?
   emailVerified  DateTime?
@@ -34,6 +34,7 @@ model User {
   Authenticator  Authenticator[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  Checklist      Checklist[]
 }
 
 model Account {
@@ -77,16 +78,128 @@ model VerificationToken {
 }
 
 model Authenticator {
-  credentialID         String   @id
-  userId              String
+  credentialID         String  @id
+  userId               String
   providerAccountId    String
   credentialPublicKey  String
-  counter             Int
+  counter              Int
   credentialDeviceType String
   credentialBackedUp   Boolean
-  transports          String?
+  transports           String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, credentialID])
+}
+
+enum AnomalyCategory {
+  EDI
+  EXPEDITION
+  ETIQUETTAGE
+  ETIQUETTAGE_PALETTE_HOMOGENE
+  ETIQUETTAGE_PALETTE_HETEROGENE
+  PALETISATION
+}
+
+enum EDISubcategory {
+  MULTI_BL
+  MANQUE_BL
+  BL_NON_CONFORME
+  MANQUE_AVIEXP
+  INCOHERENCE_CONSTITUTION_PALETTE_EDI
+  INCOHERENCE_CODE_EMBALLAGE
+  NUMERO_BL_CMR_HORS_CRL
+}
+
+enum ExpeditionSubcategory {
+  TAUX_REMPLISSAGE
+  DATE_FABRICATION_BATTERIE
+  FUITE_HUILE_REMORQUE
+  CODE_ROUTAGE_TRANCHE_DEPASSEE
+  CHARGEMENT_NON_CONFORME
+  TEMPERATURE_STOCKAGE_NON_RESPECTEE
+  INCOHERENCE_CONSTITUTION_LIVRAISON_EDI
+}
+
+enum EtiquettageSubcategory {
+  ETIQUETTE_EM_NON_VISIBLE
+  ETIQUETTES_UM_UC_MAL_POSITIONNEES
+  MAUVAIS_FORMAT_ETIQUETTE
+  MANQUE_ETIQUETTES_VIDE
+  ETIQUETTES_COLLEES_EMBALLAGE_DURABLE
+  PLUSIEURS_ETIQUETTES_UC
+  DESTINATAIRE_ABSENT_ERRONE
+  EXPEDITEUR_ABSENT_ERRONE
+  POINT_CHARGEMENT_ABSENT_ERRONE
+  CODE_PRODUIT_ABSENT
+  CODE_VENDEUR_ABSENT_ERRONE
+  QUANTITE_UC_ABSENTE_ERRONEE
+  NOMBRE_COLIS_PLEINS_ABSENT_ERRONE
+  NOMBRE_ETIQUETTE_INDICE_ABSENT_ERRONE
+  POIDS_ABSENT_ERRONE
+  DATE_ABSENTE_ERRONEE
+  CODE_BARRES_ILLISIBLE_ABSENT
+  ETIQUETTE_COMPLETE_COULEUR
+  ETIQUETTE_NE_CORRESPOND_PAS
+}
+
+enum EtiquettagePaletteHomogeneSubcategory {
+  ABSENCE_ERREUR_CODE_ROUTAGE
+  ABSENCE_ERREUR_POINT_DESTINATION
+  INCOHERENCE_CODE_ROUTAGE_DESTINATION
+}
+
+enum EtiquettagePaletteHeterogeneSubcategory {
+  ABSENCE_ERREUR_CODE_ROUTAGE_UM
+  POINT_DESTINATION_CODE_PRODUIT_PRESENT
+  ABSENCE_ERREUR_CODE_ROUTAGE_UC
+  AUTRES_ANOMALIES_ETIQUETAGE
+}
+
+enum PaletisationSubcategory {
+  TYPE_PALETTE_NON_CONFORME
+  PALETTE_NON_TRAITEE
+  UCS_NON_PALETTISE
+  MAUVAISE_CONSTITUTION_PALETTE
+  PALETTE_FILMEE
+  CERCLAGE_NON_CONFORME_ABSENT
+  MANQUE_COIFFE_NON_CONFORME
+  PALETTE_NON_GERBABLE
+  PLUSIEURS_CODE_ROUTAGES
+  PLUSIEURS_FOURNISSEURS
+  POINTS_DECHARGEMENT_DIFFERENTS
+  AUTRES_ANOMALIES_PALETISATION
+}
+
+model SubcategoryDetail {
+  id          String    @id @default(uuid())
+  checklistId String
+  subcategory String
+  um          Boolean   @default(false)
+  uc          Boolean   @default(false)
+  ums         Boolean   @default(false)
+  bl          Boolean   @default(false)
+  aviexp      Boolean   @default(false)
+  comment     String?
+  checklist   Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+
+  @@unique([checklistId, subcategory])
+}
+
+model Checklist {
+  id           String            @id @default(uuid())
+  codeRoute    String
+  cofor        String
+  blNumber     String
+  reference    String
+  matricule    String
+  categories   AnomalyCategory[]
+  subcategories String[]
+  subcategoryDetails SubcategoryDetail[]
+  images      String[]
+  createdBy    User              @relation(fields: [userId], references: [id])
+  userId       String
+  timeSpent Int?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 }

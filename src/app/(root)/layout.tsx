@@ -1,21 +1,10 @@
 import type { Metadata } from 'next';
 import '../globals.css';
-import 'swiper/css';
-import 'aos';
-import 'aos/dist/aos.css';
-import 'react-tooltip/dist/react-tooltip.css';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-modern-drawer/dist/index.css';
 import { getUserByEmail } from '@/lib/actions/auth';
 import { requireUser } from '@/hooks';
 import { VisitorApprovalMessage } from '@/components/shared/Users/VisitorApprovalMessage';
-import { signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Sidebar from '@/components/shared/Sidebar';
-import Header from '@/components/shared/Header';
-import SheetSidebar from '@/components/shared/Sidebar';
 import MobileSidebar from '@/components/shared/MobileSidebar';
 
 export const metadata: Metadata = {
@@ -57,10 +46,10 @@ export default async function RootLayout({
           <Sidebar user={userData} />
         </div>
         <div className="col-span-10 xl:h-screen overflow-y-scroll relative">
-          <div className="fixed top-4 left-4 z-50">
+          <div className="fixed top-4 left-6 z-50">
             <MobileSidebar user={userData} />
           </div>
-          <div className="xs:px-8 px-2 pt-24">{children}</div>
+          <div className="xs:px-8 px-2 pt-16 sm:pt-8">{children}</div>
         </div>
       </div>
     </ThemeProvider>

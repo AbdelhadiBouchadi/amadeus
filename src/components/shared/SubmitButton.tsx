@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { BiLoaderCircle } from 'react-icons/bi';
+import { Loader2 } from 'lucide-react';
 
 interface ButtonProps {
   isLoading: boolean;
@@ -16,7 +16,7 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
     >
       {isLoading ? (
         <div className="flex items-center gap-4">
-          <BiLoaderCircle className="animate-spin text-white text-2xl" />
+          <Loader2 className="animate-spin text-white text-2xl" />
           En Cours de Traitement
         </div>
       ) : (

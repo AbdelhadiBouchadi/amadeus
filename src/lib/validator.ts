@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { UserRole, AnomalyCategory } from '@/types';
 import * as z from 'zod';
 
 export const loginFormSchema = z.object({
@@ -43,3 +43,31 @@ export const updateUserProfileSchema = z.object({
 });
 
 export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
+
+const subcategoryDetailSchema = z.object({
+  subcategory: z.string(),
+  um: z.boolean().default(false),
+  uc: z.boolean().default(false),
+  ums: z.boolean().default(false),
+  bl: z.boolean().default(false),
+  aviexp: z.boolean().default(false),
+  comment: z.string().optional(),
+});
+
+export const checklistSchema = z.object({
+  codeRoute: z.string().min(1, 'Le code route est obligatoire'),
+  cofor: z.string().min(1, 'Le code fournisseur est obligatoire'),
+  blNumber: z.string().min(1, 'Le numéro BL est obligatoire'),
+  reference: z.string().min(1, 'La référence est obligatoire'),
+  matricule: z.string().min(1, 'Le matricule est obligatoire'),
+  categories: z
+    .array(z.nativeEnum(AnomalyCategory))
+    .min(1, 'Au moins une catégorie est requise'),
+  subcategories: z
+    .array(z.string())
+    .min(1, 'Au moins une sous-catégorie est requise'),
+  subcategoryDetails: z.array(subcategoryDetailSchema).optional(),
+  images: z.array(z.string()).default([]),
+});
+
+export type ChecklistFormValues = z.infer<typeof checklistSchema>;
