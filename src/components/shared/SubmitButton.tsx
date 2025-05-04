@@ -11,6 +11,7 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
   return (
     <Button
       type="submit"
+      variant="default"
       disabled={isLoading}
       className={className ?? 'flex justify-center items-center w-full '}
     >

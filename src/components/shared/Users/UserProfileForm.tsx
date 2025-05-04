@@ -132,7 +132,10 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
             <FormItem>
               <FormLabel>Prénom</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className="border-subMain dark:border-border"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -146,7 +149,10 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
             <FormItem>
               <FormLabel>Nom</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className="border-subMain dark:border-border"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,7 +166,10 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
             <FormItem>
               <FormLabel>ID</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className="border-subMain dark:border-border"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,7 +183,11 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} type="email" />
+                <Input
+                  {...field}
+                  type="email"
+                  className="border-subMain dark:border-border"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -193,7 +206,7 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
                   value={field.value}
                   disabled={sessionUser?.role !== UserRole.ADMIN}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-subMain dark:border-border">
                     <SelectValue placeholder="Choisir un role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -233,6 +246,7 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
                           {...field}
                           type={showPassword ? 'text' : 'password'}
                           placeholder="Mot de passe"
+                          className="border-subMain dark:border-border"
                         />
                         <button
                           type="button"
@@ -264,6 +278,7 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
                           {...field}
                           type={showPassword ? 'text' : 'password'}
                           placeholder="Nouveau mot de passe"
+                          className="border-subMain dark:border-border"
                         />
                         <button
                           type="button"
@@ -288,7 +303,7 @@ export function UserProfileForm({ user, sessionUser }: UserProfileFormProps) {
 
         <SubmitButton isLoading={form.formState.isSubmitting}>
           Sauvegarder
-          <HiOutlineCheckCircle className="text-xl" />
+          <HiOutlineCheckCircle className="text-xl ml-2" />
         </SubmitButton>
       </form>
     </Form>

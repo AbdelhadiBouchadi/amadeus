@@ -5,9 +5,7 @@ import { ChecklistsTable } from './ChecklistsTable';
 import { cn, formatCategory, getCategoryColor } from '../../../lib/utils';
 import { motion } from 'framer-motion';
 import { ChecklistData, ChecklistStats, AnomalyCategory } from '../../../types';
-import { ClipboardCheck, List, AlertTriangle } from 'lucide-react';
-import Link from 'next/link';
-import { BiPlus } from 'react-icons/bi';
+import { ClipboardCheck, List, AlertTriangle, Plus } from 'lucide-react';
 
 interface ChecklistsPageProps {
   checklists: ChecklistData[];
@@ -61,12 +59,17 @@ const ChecklistsPage: React.FC<ChecklistsPageProps> = ({
 
   return (
     <>
-      <Link
+      <motion.a
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         href="/checklist/create"
-        className="w-16 h-16 border border-border z-50 bg-primary text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
+        className="w-16 h-16 border border-border z-50 bg-primary text-white rounded-full flex-colo fixed bottom-8 right-12 shadow-2xl"
       >
-        <BiPlus className="text-2xl" />
-      </Link>
+        <Plus className="size-8 text-primary-foreground" />
+      </motion.a>
 
       <motion.h1
         initial={{ opacity: 0, y: -20 }}

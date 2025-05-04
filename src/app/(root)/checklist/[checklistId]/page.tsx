@@ -35,6 +35,7 @@ import EDIDetailsModal from '@/components/shared/Checklist/EDIDetailsModal';
 import EDIDetailsButton from '@/components/shared/Checklist/EDIDetailsButton';
 import { Button } from '@/components/ui/button';
 import { DeleteChecklist } from '@/components/shared/Checklist/DeleteChecklist';
+import { IoArrowBackOutline } from 'react-icons/io5';
 
 type SubcategoryMap = {
   [AnomalyCategory.EDI]: typeof EDI_SUBCATEGORY_MAP;

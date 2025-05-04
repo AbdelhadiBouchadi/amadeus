@@ -55,6 +55,7 @@ const SidebarLink = ({ title, path, icon }: SidebarLinkProps) => {
     >
       <Link
         href={path}
+        scroll={false}
         className={`
             ${isActive ? 'bg-subMain' : ''}
             flex gap-4 transitions group items-center w-full p-4 rounded-lg hover:bg-subMain`}

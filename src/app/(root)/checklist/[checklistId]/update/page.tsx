@@ -19,7 +19,7 @@ const UpdateChecklistPage = async ({
     <>
       <div className="flex items-center gap-4">
         <Link
-          href="/checklist"
+          href={`/checklist/${checklist.data.id}`}
           className="border border-subMain dark:border-border rounded-lg py-3 px-4 text-md group"
         >
           <IoArrowBackOutline className="text-xl text-primary group-hover:-translate-x-2 transition-all duration-300" />

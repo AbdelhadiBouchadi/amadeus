@@ -21,11 +21,12 @@ export function UserProfile({ user, sessionUser }: UserProfileProps) {
           <IoArrowBackOutline className="text-xl text-primary group-hover:-translate-x-2 transition-all duration-300" />
         </Link>
         <h1 className="sm:text-xl font-semibold">
-          {user.firstName || user.email}
+          {user.firstName || user.email} {user.lastName || user.email}{' '}
+          <span className="underline ml-3">#{user.userId || user.email}</span>
         </h1>
       </div>
       <div className="grid grid-cols-12 gap-6 my-8 items-start">
-        <div className="col-span-12 lg:col-span-8 rounded-xl border-[1px] p-6">
+        <div className="col-span-12 lg:col-span-8 rounded-xl border-[1px] border-subMain dark:border-border p-6">
           <UserProfileForm user={user} sessionUser={sessionUser} />
         </div>
       </div>

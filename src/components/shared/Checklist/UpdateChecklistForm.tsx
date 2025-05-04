@@ -380,12 +380,12 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
               </div>
             )}
 
-            <div className="flex items-center space-x-3 w-full">
+            <div className="flex justify-end space-x-3">
               <Button
                 type="button"
-                variant="default"
+                variant="destructive"
                 onClick={() => router.back()}
-                className="sm:px-6 rounded-md transition-colors w-full bg-subMain"
+                className="px-6 rounded-md  w-full "
               >
                 <History className="mr-2 size-5" />
                 Annuler

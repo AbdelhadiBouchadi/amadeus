@@ -339,9 +339,9 @@ const ChecklistForm = () => {
             <div className="flex justify-end space-x-3">
               <Button
                 type="button"
-                variant="default"
+                variant="secondary"
                 onClick={() => form.reset()}
-                className="px-6 rounded-md  w-full bg-subMain hover:bg-main/20 dark:bg-secondary dark:text-greyed"
+                className="px-6 rounded-md  w-full"
               >
                 <History className="mr-2 size-5" />
                 Réinitialiser
@@ -351,7 +351,7 @@ const ChecklistForm = () => {
                 className="px-6 rounded-md w-full"
               >
                 <CircleCheck className="mr-2 size-5" />
-                Enregistrer la Checklist
+                Créer
               </SubmitButton>
             </div>
           </form>
