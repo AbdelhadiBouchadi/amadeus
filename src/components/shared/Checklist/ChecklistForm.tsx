@@ -154,10 +154,7 @@ const ChecklistForm = () => {
     <div className="min-h-screen p-4 sm:p-6">
       <div className="max-w-5xl mx-auto">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 animate-fadeIn"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300">
               <h2 className="text-xl font-semibold mb-6">Nouvelle Checklist</h2>
 
@@ -171,7 +168,11 @@ const ChecklistForm = () => {
                         Code Route
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez le code route" {...field} />
+                        <Input
+                          placeholder="Entrez le code route"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -190,6 +191,7 @@ const ChecklistForm = () => {
                         <Input
                           placeholder="Entrez le code fournisseur"
                           {...field}
+                          className="border-subMain dark:border-border"
                         />
                       </FormControl>
                       <FormMessage className="text-red-500" />
@@ -204,7 +206,11 @@ const ChecklistForm = () => {
                     <FormItem>
                       <FormLabel className="font-semibold">Numéro BL</FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez le numéro BL" {...field} />
+                        <Input
+                          placeholder="Entrez le numéro BL"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -218,7 +224,11 @@ const ChecklistForm = () => {
                     <FormItem>
                       <FormLabel className="font-semibold">Référence</FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez la référence" {...field} />
+                        <Input
+                          placeholder="Entrez la référence"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -232,7 +242,11 @@ const ChecklistForm = () => {
                     <FormItem>
                       <FormLabel className="font-semibold">Matricule</FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez le matricule" {...field} />
+                        <Input
+                          placeholder="Entrez le matricule"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -261,8 +275,8 @@ const ChecklistForm = () => {
             </div>
 
             {selectedCategories.length > 0 && (
-              <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300 animate-slideIn">
-                <h3 className="text-lg font-medium mb-4">
+              <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300">
+                <h3 className="text-lg font-semibold mb-4">
                   Détails de l'Anomalie
                 </h3>
 

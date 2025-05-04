@@ -83,7 +83,7 @@ export const MultiSubcategorySelect: React.FC<MultiSubcategorySelectProps> = ({
   return (
     <div className="space-y-2">
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild className="border-subMain dark:border-border">
           <div
             role="combobox"
             aria-expanded={open}

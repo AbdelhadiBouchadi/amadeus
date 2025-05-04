@@ -99,7 +99,7 @@ const SubcategoryDetailsList: React.FC<SubcategoryDetailsListProps> = ({
               className="border border-subMain dark:border-border rounded-lg overflow-hidden"
             >
               <AccordionItem value={category} className="border-b-0">
-                <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+                <AccordionTrigger className="px-4 py-3 hover:bg-subMain dark:hover:bg-gray-800">
                   <span className="font-medium">
                     {CATEGORY_LABELS[category]}
                   </span>

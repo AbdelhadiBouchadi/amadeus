@@ -193,10 +193,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
     <div className="min-h-screen sm:p-6">
       <div className="max-w-5xl mx-auto">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 animate-fadeIn"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
             <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300">
               <h2 className="text-xl font-semibold mb-6">
                 Modifier la Checklist
@@ -212,7 +209,11 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                         Code Route
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez le code route" {...field} />
+                        <Input
+                          placeholder="Entrez le code route"
+                          className="border-subMain dark:border-border"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -230,6 +231,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                       <FormControl>
                         <Input
                           placeholder="Entrez le code fournisseur"
+                          className="border-subMain dark:border-border"
                           {...field}
                         />
                       </FormControl>
@@ -245,7 +247,11 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                     <FormItem>
                       <FormLabel className="font-semibold">Numéro BL</FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez le numéro BL" {...field} />
+                        <Input
+                          placeholder="Entrez le numéro BL"
+                          className="border-subMain dark:border-border"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -259,7 +265,11 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                     <FormItem>
                       <FormLabel className="font-semibold">Référence</FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez la référence" {...field} />
+                        <Input
+                          placeholder="Entrez la référence"
+                          className="border-subMain dark:border-border"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -273,7 +283,11 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                     <FormItem>
                       <FormLabel className="font-semibold">Matricule</FormLabel>
                       <FormControl>
-                        <Input placeholder="Entrez le matricule" {...field} />
+                        <Input
+                          placeholder="Entrez le matricule"
+                          className="border-subMain dark:border-border"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage className="text-red-500" />
                     </FormItem>
@@ -302,7 +316,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
             </div>
 
             {selectedCategories.length > 0 && (
-              <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300 animate-slideIn">
+              <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300 ">
                 <h3 className="text-lg font-medium mb-4">
                   Détails de l'Anomalie
                 </h3>
