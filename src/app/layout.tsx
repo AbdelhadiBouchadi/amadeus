@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Encode_Sans } from 'next/font/google';
 import './globals.css';
 import { auth } from '@/auth';
 import { SessionProvider } from 'next-auth/react';
 import { Toaster } from 'react-hot-toast';
 
-const poppins = Poppins({
+const encode = Encode_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '600', '700'],
 });
@@ -54,7 +54,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en">
         <body
-          className={`${poppins.className} antialiased xl:h-screen flex-colo`}
+          className={`${encode.className} antialiased xl:h-screen flex-colo`}
         >
           {children}
           <Toaster position="top-right" />
