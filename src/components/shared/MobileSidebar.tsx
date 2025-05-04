@@ -72,7 +72,7 @@ const MobileSidebar = ({ user }: MobileSidebarProps) => {
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden relative group overflow-hidden bg-main/20 backdrop-blur-sm border border-main/20 shadow-lg hover:bg-main/20 hover:border-main/30 transition-all duration-300"
+          className="xl:hidden relative group overflow-hidden bg-main/20 backdrop-blur-sm border border-main/20 shadow-lg hover:bg-main/20 hover:border-main/30 transition-all duration-300"
         >
           <span className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <Menu className="size-5 text-gray-700 dark:text-gray-200 relative z-10 group-hover:scale-110 transition-transform duration-300" />

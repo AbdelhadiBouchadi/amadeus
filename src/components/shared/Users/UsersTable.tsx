@@ -24,7 +24,7 @@ interface UserTableProps {
 }
 
 export const UserTable: React.FC<UserTableProps> = ({ data }) => {
-  const thClass = 'text-center text-sm font-medium py-3 px-2 whitespace-nowrap';
+  const thClass = 'text-center text-sm py-3 px-2 whitespace-nowrap font-bold';
   const tdClass = 'text-xs py-4 px-2 whitespace-nowrap text-center';
 
   return (

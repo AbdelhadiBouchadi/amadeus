@@ -218,3 +218,32 @@ export function getCategoryColor(category: AnomalyCategory): string[] {
 export function isBlobUrl(url: string): boolean {
   return url.startsWith('blob:');
 }
+
+export function getUserRoleColor(role: string): [string, string] {
+  switch (role) {
+    case 'ADMIN':
+      return ['bg-purple-500', 'text-purple-500'];
+    case 'MONITOR':
+      return ['bg-blue-500', 'text-blue-500'];
+    case 'VISITOR':
+      return ['bg-green-500', 'text-green-500'];
+    default:
+      return ['bg-gray-500', 'text-gray-500'];
+  }
+}
+
+export function formatDate(date: string | Date): string {
+  if (!date) return '';
+
+  const d = new Date(date);
+  return d.toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+export function truncateText(text: string, maxLength: number): string {
+  if (!text || text.length <= maxLength) return text;
+  return `${text.substring(0, maxLength)}...`;
+}

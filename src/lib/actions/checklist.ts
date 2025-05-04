@@ -199,7 +199,14 @@ export async function getChecklists() {
 
 export async function getChecklistStats() {
   try {
+    const session = await auth();
+    if (!session?.user?.id) throw new Error('Unauthorized');
+
+    const isAdmin = session.user.role === 'ADMIN';
+
+    // Query checklists based on user role
     const checklists = await db.checklist.findMany({
+      where: isAdmin ? {} : { userId: session.user.id },
       select: {
         categories: true,
       },

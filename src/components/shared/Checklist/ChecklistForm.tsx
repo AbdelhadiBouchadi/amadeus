@@ -339,9 +339,9 @@ const ChecklistForm = () => {
             <div className="flex justify-end space-x-3">
               <Button
                 type="button"
-                variant="outline"
+                variant="default"
                 onClick={() => form.reset()}
-                className="px-6 rounded-md  w-full"
+                className="px-6 rounded-md  w-full bg-subMain hover:bg-main/20 dark:bg-secondary dark:text-greyed"
               >
                 <History className="mr-2 size-5" />
                 Réinitialiser

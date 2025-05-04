@@ -131,7 +131,7 @@ export interface ChecklistData {
   subcategories: string[];
   subcategoryDetails: SubcategoryDetail[];
   images: string[];
-  userId: string;
+  userId?: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy: {
@@ -145,4 +145,22 @@ export interface ChecklistData {
 export interface ChecklistStats {
   total: number;
   byCategory: Record<AnomalyCategory, number>;
+}
+
+export interface UserStats {
+  monitors: number;
+  visitors: number;
+  admins: number;
+}
+
+export interface MonthlyStats {
+  checklists: number[];
+  users: number[];
+}
+
+export interface DashboardStats {
+  userStats: UserStats;
+  checklistStats: ChecklistStats;
+  monthlyStats: MonthlyStats;
+  recentChecklists: ChecklistData[];
 }

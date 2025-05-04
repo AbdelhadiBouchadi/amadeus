@@ -49,7 +49,7 @@ export default async function RootLayout({
           <div className="fixed top-4 left-8 z-50">
             <MobileSidebar user={userData} />
           </div>
-          <div className="px-8  pt-16 sm:pt-8">{children}</div>
+          <div className="px-8 pt-16  lg:pt-20 xl:pt-8">{children}</div>
         </div>
       </div>
     </ThemeProvider>

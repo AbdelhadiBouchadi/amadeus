@@ -295,8 +295,8 @@ export default async function ChecklistPage({
       <div className="flex items-center gap-3 my-4 w-full">
         <Button
           asChild
-          variant="outline"
-          className="flex items-center gap-2 w-full"
+          variant="link"
+          className="flex items-center gap-2 w-full bg-subMain hover:bg-main/20 dark:bg-secondary"
         >
           <Link href={`/checklist/${data.id}/update`}>
             <Pencil className="h-4 w-4" />
