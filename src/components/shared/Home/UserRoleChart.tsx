@@ -40,9 +40,6 @@ const UserRoleChart: React.FC<UserRoleChartProps> = ({ data }) => {
                 outerRadius={80}
                 paddingAngle={5}
                 dataKey="value"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
               >
                 {chartData.map((entry, index) => (
                   <Cell

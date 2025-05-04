@@ -37,38 +37,40 @@ export const CATEGORY_COLORS: Record<AnomalyCategory, string> = {
 export const EDI_SUBCATEGORY_MAP: Record<EDISubcategory, SubcategoryInfo> = {
   [EDISubcategory.MULTI_BL]: {
     label: 'Multi BL',
-    chapitreMLP: 'EDI-001',
-    codeAnomalie: 'E001',
+    chapitreMLP: 'Chap H S2.4',
+    codeAnomalie: '136',
   },
   [EDISubcategory.MANQUE_BL]: {
     label: 'Manque BL',
-    chapitreMLP: 'EDI-002',
-    codeAnomalie: 'E002',
+    chapitreMLP: 'Chap H S2.4',
+    codeAnomalie: '136',
   },
   [EDISubcategory.BL_NON_CONFORME]: {
     label: 'BL non conforme',
-    chapitreMLP: 'EDI-003',
-    codeAnomalie: 'E003',
+    chapitreMLP: 'Chap H S2.4',
+    codeAnomalie: '136',
   },
   [EDISubcategory.MANQUE_AVIEXP]: {
-    label: 'Manque AVIEXP',
-    chapitreMLP: 'EDI-004',
-    codeAnomalie: 'E004',
+    label: 'Manque AVIEXP / Saisie manuelle',
+    chapitreMLP: 'Chap H S2.3',
+    codeAnomalie: '141',
   },
   [EDISubcategory.INCOHERENCE_CONSTITUTION_PALETTE_EDI]: {
-    label: 'Incohérence constitution palette EDI',
-    chapitreMLP: 'EDI-005',
-    codeAnomalie: 'E005',
+    label:
+      'Incohérence entre la constitution physique de la palette et la constitution dans le message EDI ( vérification fiche palette hétérogène ou sur les fiches suiveuses)',
+    chapitreMLP: 'Chap H S2.3',
+    codeAnomalie: '113',
   },
   [EDISubcategory.INCOHERENCE_CODE_EMBALLAGE]: {
-    label: 'Incohérence code emballage',
-    chapitreMLP: 'EDI-006',
-    codeAnomalie: 'E006',
+    label:
+      "Incohérence entre code emballage fiche suiveuse et l'emballage livré",
+    chapitreMLP: 'X',
+    codeAnomalie: '113',
   },
   [EDISubcategory.NUMERO_BL_CMR_HORS_CRL]: {
-    label: 'Numéro BL/CMR hors CRL',
-    chapitreMLP: 'EDI-007',
-    codeAnomalie: 'E007',
+    label: 'Numéro de BL sur la  CMR hors CRL',
+    chapitreMLP: 'Chap C S3 pt 6',
+    codeAnomalie: '136',
   },
 };
 

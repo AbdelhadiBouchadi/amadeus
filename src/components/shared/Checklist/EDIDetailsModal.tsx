@@ -22,7 +22,7 @@ const EDIDetailsModal: React.FC<EDIDetailsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-greyed dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+      <div className="bg-greyed dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-8">
         <h3 className="text-lg font-semibold mb-4">Détails de l'incohérence</h3>
 
         <div className="space-y-4">

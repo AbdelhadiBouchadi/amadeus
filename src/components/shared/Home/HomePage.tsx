@@ -94,7 +94,7 @@ const HomePage: React.FC<HomePageProps> = ({ stats }) => {
             color={[bgColor, textColor]}
             description={
               topCategory
-                ? `occurrences d'anomalie`
+                ? `Occurrences d'anomalie`
                 : 'Aucune anomalie détectée'
             }
             change={{

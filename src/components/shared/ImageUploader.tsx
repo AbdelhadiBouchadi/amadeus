@@ -5,7 +5,7 @@ import { useDropzone } from '@uploadthing/react/hooks';
 import { generateClientDropzoneAccept } from 'uploadthing/client';
 import { convertFileToUrl } from '@/lib/utils';
 import { FiUploadCloud } from 'react-icons/fi';
-import { XIcon } from 'lucide-react';
+import { CloudUpload, XIcon } from 'lucide-react';
 
 type FileUploaderProps = {
   onFieldChange: (urls: string[]) => void;
@@ -51,17 +51,15 @@ export function FileUploader({
     <div className="flex flex-col gap-4 w-full">
       <div
         {...getRootProps()}
-        className="px-6 lg:col-span-10 sm:col-span-8 col-span-12 pt-5 pb-6 border-2 border-primary border-dashed rounded-md cursor-pointer"
+        className="px-6 lg:col-span-10 sm:col-span-8 col-span-12 pt-5 pb-6 border-2 border-primary border-subMain dark:border-border rounded-md cursor-pointer"
       >
         <input {...getInputProps()} className="cursor-pointer" />
         <div className="w-full flex flex-col items-center justify-center">
           <span className="mx-auto flex justify-center">
-            <FiUploadCloud className="text-3xl text-primary" />
+            <CloudUpload className="size-8 text-primary/60" />
           </span>
           <p className="text-sm mt-2">Placez l'image ici</p>
-          <em className="text-xs text-gray-400">
-            (Only *.jpeg and *.png images will be accepted)
-          </em>
+          <em className="text-xs text-gray-700 my-4">SVG, PNG, JPG</em>
         </div>
       </div>
 

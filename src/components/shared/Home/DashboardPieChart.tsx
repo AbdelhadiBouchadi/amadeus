@@ -47,9 +47,6 @@ const DashboardPieChart: React.FC<DashboardPieChartProps> = ({ data }) => {
                 outerRadius={80}
                 paddingAngle={5}
                 dataKey="value"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
               >
                 {chartData.map((entry, index) => (
                   <Cell

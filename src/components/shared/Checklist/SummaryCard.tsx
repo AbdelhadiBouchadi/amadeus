@@ -1,6 +1,6 @@
 import React from 'react';
 import { AnomalyCategory } from '@/types';
-import { getSubcategoryLabel } from '@/constants';
+import { getSubcategoriesForCategory, getSubcategoryLabel } from '@/constants';
 import CategoryBadge from './CategoryBadge';
 
 interface SummaryCardProps {
@@ -36,28 +36,22 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
         <ul className="text-sm space-y-1 pl-5 list-disc">
           {subcategories.map((subcategory) => {
             // Find the category this subcategory belongs to
-            const category = categories.find((cat) => {
-              const subcategoriesForCat = getSubcategoriesForCategory(cat);
-              return subcategoriesForCat.includes(subcategory);
-            });
+            const category = categories.find((cat) =>
+              getSubcategoriesForCategory(cat).includes(subcategory)
+            );
 
-            const label = category
-              ? getSubcategoryLabel(category, subcategory)
-              : subcategory;
-
-            return <li key={subcategory}>{label}</li>;
+            return (
+              <li key={subcategory}>
+                {category
+                  ? getSubcategoryLabel(category, subcategory)
+                  : subcategory}
+              </li>
+            );
           })}
         </ul>
       </div>
     </div>
   );
 };
-
-// Helper function to get subcategories for a category
-// This should match the one from your constants
-function getSubcategoriesForCategory(category: AnomalyCategory): string[] {
-  // This is a simplified version, replace with actual implementation
-  return [];
-}
 
 export default SummaryCard;

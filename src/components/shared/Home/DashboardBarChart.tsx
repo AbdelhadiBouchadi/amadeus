@@ -55,7 +55,10 @@ const DashboardBarChart: React.FC<DashboardBarChartProps> = ({
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={last6MonthsData}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                className="stroke-muted-foreground"
+              />
               <XAxis
                 dataKey="name"
                 fontSize={12}

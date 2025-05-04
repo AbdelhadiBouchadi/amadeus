@@ -14,7 +14,7 @@ interface ChecklistsTableProps {
 }
 
 export const ChecklistsTable: React.FC<ChecklistsTableProps> = ({ data }) => {
-  const thClass = 'text-center text-sm font-medium py-3 px-2 whitespace-nowrap';
+  const thClass = 'text-center text-sm font-bold py-3 px-2 whitespace-nowrap';
   const tdClass = 'text-xs py-4 px-2 whitespace-nowrap text-center';
 
   return (

@@ -87,7 +87,7 @@ export const MultiSubcategorySelect: React.FC<MultiSubcategorySelectProps> = ({
           <div
             role="combobox"
             aria-expanded={open}
-            className="flex items-center justify-between w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer"
+            className="flex items-center justify-between w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer"
           >
             <span className="text-sm text-gray-500">
               {value.length > 0
@@ -141,7 +141,7 @@ export const MultiSubcategorySelect: React.FC<MultiSubcategorySelectProps> = ({
             <Badge
               key={subcategory.value}
               variant="secondary"
-              className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-1"
+              className="flex items-center gap-1 bg-subMain hover:bg-gray-200 dark:hover:bg-greyed text-gray-800 py-1"
             >
               {subcategory.label}
               <button
