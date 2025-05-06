@@ -108,15 +108,31 @@ export interface SubcategoryDetail {
 // Type for category to subcategory map
 export type SubcategoryMap<T extends string> = Record<T, SubcategoryInfo>;
 
+export enum DeliveryType {
+  CONFORME = 'CONFORME',
+  NON_CONFORME = 'NON_CONFORME',
+}
+
+export enum ShipmentType {
+  GROUPAGE = 'GROUPAGE',
+  NORMALE = 'NORMALE',
+}
+
 export interface ChecklistFormData {
   codeRoute: string;
   cofor: string;
   blNumber: string;
   reference: string;
   matricule: string;
-  categories: AnomalyCategory[];
-  subcategories: string[];
-  subcategoryDetails: SubcategoryDetail[];
+  project: string;
+  shift: string;
+  providerName: string;
+  shipmentType: ShipmentType;
+  deliveryType: DeliveryType;
+  conformityComment?: string;
+  categories?: AnomalyCategory[];
+  subcategories?: string[];
+  subcategoryDetails?: SubcategoryDetail[];
   images?: string[];
 }
 
@@ -130,14 +146,14 @@ export interface ChecklistData {
   project: string;
   shift: string;
   providerName: string;
-  shipmentType: 'GROUPAGE' | 'NORMALE';
-  deliveryType: 'CONFORME' | 'NON_CONFORME';
+  shipmentType: ShipmentType;
+  deliveryType: DeliveryType;
   conformityComment?: string;
-  categories?: AnomalyCategory[];
-  subcategories?: string[];
-  subcategoryDetails?: SubcategoryDetail[];
-  images?: string[];
-  userId?: string;
+  categories: AnomalyCategory[];
+  subcategories: string[];
+  subcategoryDetails: SubcategoryDetail[];
+  images: string[];
+  userId: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy: {
@@ -146,11 +162,26 @@ export interface ChecklistData {
     lastName: string | null;
     email: string | null;
   };
+  timeSpent?: number;
 }
 
 export interface ChecklistStats {
   total: number;
   byCategory: Record<AnomalyCategory, number>;
+}
+
+export interface DashboardStats {
+  userStats: {
+    monitors: number;
+    visitors: number;
+    admins: number;
+  };
+  checklistStats: ChecklistStats;
+  monthlyStats: {
+    users: number[];
+    checklists: number[];
+  };
+  recentChecklists: ChecklistData[];
 }
 
 export interface UserStats {
@@ -162,11 +193,4 @@ export interface UserStats {
 export interface MonthlyStats {
   checklists: number[];
   users: number[];
-}
-
-export interface DashboardStats {
-  userStats: UserStats;
-  checklistStats: ChecklistStats;
-  monthlyStats: MonthlyStats;
-  recentChecklists: ChecklistData[];
 }

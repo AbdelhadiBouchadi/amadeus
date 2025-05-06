@@ -9,6 +9,8 @@ import {
   DashboardStats,
   ChecklistData,
   SubcategoryDetail,
+  ShipmentType,
+  DeliveryType,
 } from '@/types';
 
 export async function getDashboardStats(): Promise<DashboardStats> {
@@ -96,10 +98,17 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         blNumber: checklist.blNumber,
         reference: checklist.reference,
         matricule: checklist.matricule,
+        project: checklist.project,
+        shift: checklist.shift,
+        providerName: checklist.providerName,
+        shipmentType: checklist.shipmentType as ShipmentType,
+        deliveryType: checklist.deliveryType as DeliveryType,
+        conformityComment: checklist.conformityComment || undefined,
         categories: checklist.categories as AnomalyCategory[],
         subcategories: checklist.subcategories,
         subcategoryDetails: checklist.subcategoryDetails as SubcategoryDetail[],
         images: checklist.images,
+        userId: checklist.userId,
         createdBy: {
           id: checklist.createdBy.id,
           firstName: checklist.createdBy.firstName || null,
