@@ -14,6 +14,11 @@ import {
   AlertTriangle,
   Clock,
   Pencil,
+  Building2,
+  Briefcase,
+  Users,
+  Box,
+  CheckCircle2,
 } from 'lucide-react';
 import {
   EDI_SUBCATEGORY_MAP,
@@ -143,6 +148,40 @@ export default async function ChecklistPage({
             </div>
           </div>
 
+          {/* Project Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 p-4 rounded-lg border border-subMain dark:border-border">
+            <div className="flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-main" />
+              <div>
+                <p className="text-sm text-gray-600">Projet</p>
+                <p className="font-medium">{data.project}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-main" />
+              <div>
+                <p className="text-sm text-gray-600">Shift</p>
+                <p className="font-medium">{data.shift}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-main" />
+              <div>
+                <p className="text-sm text-gray-600">Fournisseur</p>
+                <p className="font-medium">{data.providerName}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Box className="h-5 w-5 text-main" />
+              <div>
+                <p className="text-sm text-gray-600">Type d'expédition</p>
+                <p className="font-medium capitalize">
+                  {data.shipmentType.toLowerCase()}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Basic Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 p-4 rounded-lg border border-subMain dark:border-border">
             <div className="flex items-center gap-2">
@@ -183,115 +222,131 @@ export default async function ChecklistPage({
           </div>
         </div>
 
-        {/* Anomalies Section */}
-        <div className="rounded-xl shadow-sm border border-subMain dark:border-border p-6">
-          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-red-500" />
-            Anomalies Détectées
-          </h2>
-
-          <div className="space-y-6">
-            {data.categories.map((category) => {
-              const categoryEnum = category as AnomalyCategory;
-              const categorySubcategories = data.subcategories.filter((sub) =>
-                isSubcategoryInCategory(categoryEnum, sub)
-              );
-
-              if (categorySubcategories.length === 0) return null;
-
-              return (
-                <div
-                  key={category}
-                  className="border border-subMain dark:border-border rounded-lg overflow-hidden"
-                >
-                  <div className={`p-4 ${CATEGORY_COLORS[categoryEnum]}`}>
-                    <h3 className="font-semibold">
-                      {CATEGORY_LABELS[categoryEnum]}
-                    </h3>
-                  </div>
-                  <div className="p-4">
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-subMain dark:divide-border">
-                        <thead>
-                          <tr>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-                              Sous-catégorie
-                            </th>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-                              Chapitre MLP
-                            </th>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-                              Code Anomalie
-                            </th>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-                              Statut
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-subMain dark:divide-border">
-                          {categorySubcategories.map((subcategory) => {
-                            const info = getSubcategoryInfo(
-                              categoryEnum,
-                              subcategory
-                            );
-                            const details = data.subcategoryDetails.find(
-                              (detail) => detail.subcategory === subcategory
-                            );
-                            const title = info?.label || subcategory;
-                            const isEDIIncoherence =
-                              subcategory ===
-                              EDISubcategory.INCOHERENCE_CONSTITUTION_PALETTE_EDI;
-
-                            return (
-                              <tr
-                                key={subcategory}
-                                className="hover:bg-greyed/20"
-                              >
-                                <td className="px-4 py-2 text-sm">{title}</td>
-                                <td className="px-4 py-2 text-sm font-medium text-blue-600">
-                                  {info?.chapitreMLP || 'N/A'}
-                                </td>
-                                <td className="px-4 py-2 text-sm font-medium text-red-600">
-                                  {info?.codeAnomalie || 'N/A'}
-                                </td>
-                                <td className="px-4 py-2">
-                                  <StatusBadges
-                                    um={details?.um || false}
-                                    uc={details?.uc || false}
-                                    ums={details?.ums || false}
-                                    bl={details?.bl || false}
-                                    aviexp={details?.aviexp || false}
-                                    comment={details?.comment || undefined}
-                                    title={title}
-                                  />
-                                </td>
-                                <td className="px-4 py-2">
-                                  {isEDIIncoherence && details && (
-                                    <EDIDetailsButton details={details} />
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        {data.deliveryType === 'CONFORME' ? (
+          <div className="rounded-xl shadow-sm border border-green-200 bg-green-50 p-6 text-center">
+            <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-green-700 mb-2">
+              Livraison Conforme
+            </h2>
+            {data.conformityComment && (
+              <p className="text-green-600 mt-2">{data.conformityComment}</p>
+            )}
           </div>
+        ) : (
+          <>
+            {/* Anomalies Section */}
+            <div className="rounded-xl shadow-sm border border-subMain dark:border-border p-6">
+              <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+                Anomalies Détectées
+              </h2>
 
-          {/* Images Section */}
-          {data.images.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold mb-4">
-                Images des Anomalies
-              </h3>
-              <ImageGallery images={data.images} />
+              <div className="space-y-6">
+                {data.categories.map((category) => {
+                  const categoryEnum = category as AnomalyCategory;
+                  const categorySubcategories = data.subcategories.filter(
+                    (sub) => isSubcategoryInCategory(categoryEnum, sub)
+                  );
+
+                  if (categorySubcategories.length === 0) return null;
+
+                  return (
+                    <div
+                      key={category}
+                      className="border border-subMain dark:border-border rounded-lg overflow-hidden"
+                    >
+                      <div className={`p-4 ${CATEGORY_COLORS[categoryEnum]}`}>
+                        <h3 className="font-semibold">
+                          {CATEGORY_LABELS[categoryEnum]}
+                        </h3>
+                      </div>
+                      <div className="p-4">
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full divide-y divide-subMain dark:divide-border">
+                            <thead>
+                              <tr>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                                  Sous-catégorie
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                                  Chapitre MLP
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                                  Code Anomalie
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                                  Statut
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-subMain dark:divide-border">
+                              {categorySubcategories.map((subcategory) => {
+                                const info = getSubcategoryInfo(
+                                  categoryEnum,
+                                  subcategory
+                                );
+                                const details = data.subcategoryDetails.find(
+                                  (detail) => detail.subcategory === subcategory
+                                );
+                                const title = info?.label || subcategory;
+                                const isEDIIncoherence =
+                                  subcategory ===
+                                  EDISubcategory.INCOHERENCE_CONSTITUTION_PALETTE_EDI;
+
+                                return (
+                                  <tr
+                                    key={subcategory}
+                                    className="hover:bg-greyed/20"
+                                  >
+                                    <td className="px-4 py-2 text-sm">
+                                      {title}
+                                    </td>
+                                    <td className="px-4 py-2 text-sm font-medium text-blue-600">
+                                      {info?.chapitreMLP || 'N/A'}
+                                    </td>
+                                    <td className="px-4 py-2 text-sm font-medium text-red-600">
+                                      {info?.codeAnomalie || 'N/A'}
+                                    </td>
+                                    <td className="px-4 py-2">
+                                      <StatusBadges
+                                        um={details?.um || false}
+                                        uc={details?.uc || false}
+                                        ums={details?.ums || false}
+                                        bl={details?.bl || false}
+                                        aviexp={details?.aviexp || false}
+                                        comment={details?.comment || undefined}
+                                        title={title}
+                                      />
+                                    </td>
+                                    <td className="px-4 py-2">
+                                      {isEDIIncoherence && details && (
+                                        <EDIDetailsButton details={details} />
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Images Section */}
+              {data.images.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold mb-4">
+                    Images des Anomalies
+                  </h3>
+                  <ImageGallery images={data.images} />
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
       <div className="flex items-center gap-3 my-4 w-full">
         <Button
@@ -304,7 +359,11 @@ export default async function ChecklistPage({
             Modifier
           </Link>
         </Button>
-        <DeleteChecklist checklistId={data.id} className="w-full" />
+        <DeleteChecklist
+          checklistId={data.id}
+          className="w-full"
+          text="Supprimer"
+        />
       </div>
     </div>
   );

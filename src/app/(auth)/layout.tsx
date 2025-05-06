@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import { Encode_Sans } from 'next/font/google';
 import '../globals.css';
-import 'swiper/css';
-import 'aos';
-import 'aos/dist/aos.css';
 
 const encode = Encode_Sans({
   subsets: ['latin'],

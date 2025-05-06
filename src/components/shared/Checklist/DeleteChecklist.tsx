@@ -21,11 +21,13 @@ import { deleteChecklist } from '@/lib/actions/checklist';
 interface DeleteChecklistProps {
   checklistId: string;
   className?: string;
+  text?: string;
 }
 
 export const DeleteChecklist: React.FC<DeleteChecklistProps> = ({
   checklistId,
   className,
+  text,
 }) => {
   let [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -34,12 +36,12 @@ export const DeleteChecklist: React.FC<DeleteChecklistProps> = ({
     <AlertDialog>
       <AlertDialogTrigger
         className={cn(
-          buttonVariants({ variant: 'destructive' }),
+          buttonVariants({ variant: 'destructive', size: 'icon' }),
           'flex items-center gap-2  text-white ',
           className
         )}
       >
-        Supprimer
+        {text}
         <FiTrash2 />
       </AlertDialogTrigger>
 

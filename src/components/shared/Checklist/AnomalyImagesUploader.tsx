@@ -20,7 +20,7 @@ export default function AnomalyImagesUpload({
   onFieldChange,
   setFiles,
 }: AnomalyImagesUploadProps) {
-  // Keep track of which URLs are temporary previews vs permanent uploads
+  // Keep track of which URLs are blob temporary previews vs utfs uploads
   const [tempPreviewUrls, setTempPreviewUrls] = useState<string[]>([]);
 
   const onDrop = useCallback(
@@ -32,7 +32,7 @@ export default function AnomalyImagesUpload({
         convertFileToUrl(file)
       );
 
-      // Track these as temporary preview URLs
+      // Track these as temporary blob preview URLs
       setTempPreviewUrls((prev) => [...prev, ...newPreviewUrls]);
 
       // Add the preview URLs to the field value
@@ -53,13 +53,13 @@ export default function AnomalyImagesUpload({
     newImageUrls.splice(index, 1);
     onFieldChange(newImageUrls);
 
-    // If it's a temp preview URL, remove it from that list too
+    // If it's a blob preview URL that has to be romved
     if (tempPreviewUrls.includes(urlToRemove)) {
       setTempPreviewUrls((prev) => prev.filter((url) => url !== urlToRemove));
     }
 
     setFiles((prevFiles) => {
-      // Only remove file if it corresponds to a temp preview
+      // Only remove file if it corresponds to a blob preview
       if (tempPreviewUrls.includes(urlToRemove)) {
         const newFiles = [...prevFiles];
         // Find the index of the file that matches this URL

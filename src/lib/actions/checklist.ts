@@ -11,9 +11,15 @@ interface CreateChecklistInput {
   blNumber: string;
   reference: string;
   matricule: string;
-  categories: AnomalyCategory[];
-  subcategories: string[];
-  subcategoryDetails: SubcategoryDetail[];
+  project: string;
+  shift: string;
+  providerName: string;
+  shipmentType: 'GROUPAGE' | 'NORMALE';
+  deliveryType: 'CONFORME' | 'NON_CONFORME';
+  conformityComment?: string;
+  categories?: AnomalyCategory[];
+  subcategories?: string[];
+  subcategoryDetails?: SubcategoryDetail[];
   images: string[];
   timeSpent: number;
 }
@@ -30,27 +36,33 @@ export async function createChecklist(data: CreateChecklistInput) {
         blNumber: data.blNumber,
         reference: data.reference,
         matricule: data.matricule,
-        categories: data.categories,
-        subcategories: data.subcategories,
+        project: data.project,
+        shift: data.shift,
+        providerName: data.providerName,
+        shipmentType: data.shipmentType,
+        deliveryType: data.deliveryType,
+        conformityComment: data.conformityComment,
+        categories: data.categories || [],
+        subcategories: data.subcategories || [],
         images: data.images || [],
         userId: session.user.id,
         timeSpent: data.timeSpent,
         subcategoryDetails: {
-          create: data.subcategoryDetails.map((detail) => ({
-            subcategory: detail.subcategory,
-            um: detail.um,
-            uc: detail.uc,
-            ums: detail.ums,
-            bl: detail.bl,
-            aviexp: detail.aviexp,
-            comment: detail.comment,
-            // New fields for INCOHERENCE_CONSTITUTION_PALETTE_EDI
-            referenceIncoherence: detail.referenceIncoherence,
-            codeEmballageBL: detail.codeEmballageBL,
-            codeEmballageLivre: detail.codeEmballageLivre,
-            quantite: detail.quantite,
-            numEtiquette: detail.numEtiquette,
-          })),
+          create:
+            data.subcategoryDetails?.map((detail) => ({
+              subcategory: detail.subcategory,
+              um: detail.um,
+              uc: detail.uc,
+              ums: detail.ums,
+              bl: detail.bl,
+              aviexp: detail.aviexp,
+              comment: detail.comment,
+              referenceIncoherence: detail.referenceIncoherence,
+              codeEmballageBL: detail.codeEmballageBL,
+              codeEmballageLivre: detail.codeEmballageLivre,
+              quantite: detail.quantite,
+              numEtiquette: detail.numEtiquette,
+            })) || [],
         },
       },
       include: {
@@ -97,6 +109,12 @@ export async function updateChecklist(
         blNumber: data.blNumber,
         reference: data.reference,
         matricule: data.matricule,
+        project: data.project,
+        shift: data.shift,
+        providerName: data.providerName,
+        shipmentType: data.shipmentType,
+        deliveryType: data.deliveryType,
+        conformityComment: data.conformityComment,
         categories: data.categories,
         subcategories: data.subcategories,
         images: data.images,
@@ -110,7 +128,6 @@ export async function updateChecklist(
                 bl: detail.bl,
                 aviexp: detail.aviexp,
                 comment: detail.comment,
-                // New fields for INCOHERENCE_CONSTITUTION_PALETTE_EDI
                 referenceIncoherence: detail.referenceIncoherence,
                 codeEmballageBL: detail.codeEmballageBL,
                 codeEmballageLivre: detail.codeEmballageLivre,
@@ -119,6 +136,17 @@ export async function updateChecklist(
               })),
             }
           : undefined,
+      },
+      include: {
+        createdBy: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        subcategoryDetails: true,
       },
     });
 
@@ -204,7 +232,6 @@ export async function getChecklistStats() {
 
     const isAdmin = session.user.role === 'ADMIN';
 
-    // Query checklists based on user role
     const checklists = await db.checklist.findMany({
       where: isAdmin ? {} : { userId: session.user.id },
       select: {
@@ -212,7 +239,6 @@ export async function getChecklistStats() {
       },
     });
 
-    // Initialize stats object with all categories set to 0
     const categoryStats = Object.values(AnomalyCategory).reduce(
       (acc, category) => {
         acc[category] = 0;
@@ -221,7 +247,6 @@ export async function getChecklistStats() {
       {} as Record<AnomalyCategory, number>
     );
 
-    // Count occurrences of each category
     checklists.forEach((checklist) => {
       checklist.categories.forEach((category) => {
         categoryStats[category as AnomalyCategory]++;

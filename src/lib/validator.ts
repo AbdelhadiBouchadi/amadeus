@@ -60,20 +60,36 @@ const subcategoryDetailSchema = z.object({
   numEtiquette: z.string().optional(),
 });
 
-export const checklistSchema = z.object({
-  codeRoute: z.string().min(1, 'Le code route est obligatoire'),
-  cofor: z.string().min(1, 'Le code fournisseur est obligatoire'),
-  blNumber: z.string().min(1, 'Le numéro BL est obligatoire'),
-  reference: z.string().min(1, 'La référence est obligatoire'),
-  matricule: z.string().min(1, 'Le matricule est obligatoire'),
-  categories: z
-    .array(z.nativeEnum(AnomalyCategory))
-    .min(1, 'Au moins une catégorie est requise'),
-  subcategories: z
-    .array(z.string())
-    .min(1, 'Au moins une sous-catégorie est requise'),
-  subcategoryDetails: z.array(subcategoryDetailSchema).optional().default([]),
-  images: z.array(z.string()).default([]),
-});
+export const checklistSchema = z
+  .object({
+    codeRoute: z.string().min(1, 'Le code route est obligatoire'),
+    cofor: z.string().min(1, 'Le code fournisseur est obligatoire'),
+    blNumber: z.string().min(1, 'Le numéro BL est obligatoire'),
+    reference: z.string().min(1, 'La référence est obligatoire'),
+    matricule: z.string().min(1, 'Le matricule est obligatoire'),
+    project: z.string().min(1, 'Le projet est obligatoire'),
+    shift: z.string().min(1, 'Le shift est obligatoire'),
+    providerName: z.string().min(1, 'Le nom du fournisseur est obligatoire'),
+    shipmentType: z.enum(['GROUPAGE', 'NORMALE']),
+    deliveryType: z.enum(['CONFORME', 'NON_CONFORME']),
+    conformityComment: z.string().optional(),
+    categories: z.array(z.nativeEnum(AnomalyCategory)).default([]),
+    subcategories: z.array(z.string()).default([]),
+    subcategoryDetails: z.array(subcategoryDetailSchema).optional().default([]),
+    images: z.array(z.string()).default([]),
+  })
+  .refine(
+    (data) => {
+      if (data.deliveryType === 'NON_CONFORME') {
+        return data.categories.length > 0 && data.subcategories.length > 0;
+      }
+      return true;
+    },
+    {
+      message:
+        'Les catégories et sous-catégories sont requises pour une livraison non conforme',
+      path: ['categories', 'subcategories'],
+    }
+  );
 
 export type ChecklistFormValues = z.infer<typeof checklistSchema>;

@@ -171,6 +171,16 @@ enum PaletisationSubcategory {
   AUTRES_ANOMALIES_PALETISATION
 }
 
+enum DeliveryType {
+  CONFORME
+  NON_CONFORME
+}
+
+enum ShipmentType {
+  GROUPAGE
+  NORMALE
+}
+
 model SubcategoryDetail {
   id          String    @id @default(uuid())
   checklistId String
@@ -194,15 +204,21 @@ model SubcategoryDetail {
 
 model Checklist {
   id           String            @id @default(uuid())
+  project      String
+  shift        String
+  providerName String
+  shipmentType ShipmentType
+  deliveryType DeliveryType
+  conformityComment String?
   codeRoute    String
   cofor        String
   blNumber     String
   reference    String
   matricule    String
-  categories   AnomalyCategory[]
-  subcategories String[]
+  categories   AnomalyCategory[] @default([])
+  subcategories String[]         @default([])
   subcategoryDetails SubcategoryDetail[]
-  images      String[]
+  images      String[]          @default([])
   createdBy    User              @relation(fields: [userId], references: [id])
   userId       String
   timeSpent Int?

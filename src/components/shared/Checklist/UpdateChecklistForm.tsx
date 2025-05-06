@@ -13,6 +13,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { updateChecklist } from '@/lib/actions/checklist';
 import { ChecklistFormValues, checklistSchema } from '@/lib/validator';
 import { getSubcategoriesForCategory } from '@/constants';
@@ -50,9 +58,15 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
       blNumber: checklist.blNumber,
       reference: checklist.reference,
       matricule: checklist.matricule,
+      project: checklist.project,
+      shift: checklist.shift,
+      providerName: checklist.providerName,
+      shipmentType: checklist.shipmentType,
+      deliveryType: checklist.deliveryType,
+      conformityComment: checklist.conformityComment || '',
       categories: checklist.categories,
       subcategories: checklist.subcategories || [],
-      subcategoryDetails: checklist.subcategoryDetails.map((detail) => ({
+      subcategoryDetails: checklist.subcategoryDetails?.map((detail) => ({
         subcategory: detail.subcategory,
         um: detail.um || false,
         uc: detail.uc || false,
@@ -72,7 +86,16 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
 
   const selectedCategories = form.watch('categories') || [];
   const selectedSubcategories = form.watch('subcategories') || [];
-  const currentImages = form.watch('images') || [];
+  const deliveryType = form.watch('deliveryType');
+
+  useEffect(() => {
+    if (deliveryType === 'CONFORME') {
+      form.setValue('categories', []);
+      form.setValue('subcategories', []);
+      form.setValue('subcategoryDetails', []);
+      form.setValue('images', []);
+    }
+  }, [deliveryType, form]);
 
   useEffect(() => {
     if (selectedSubcategories.length === 0) {
@@ -113,12 +136,9 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
     try {
       setIsSubmitting(true);
 
-      // Filter out blob URLs from current images
       const permanentImageUrls = data.images.filter((url) => !isBlobUrl(url));
-
       let finalImageUrls = [...permanentImageUrls];
 
-      // Only upload files if there are any
       if (files.length > 0) {
         const uploadedImages = await startUpload(files);
         if (uploadedImages) {
@@ -193,13 +213,125 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
     <div className="min-h-screen sm:p-6">
       <div className="max-w-5xl mx-auto">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
-            <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6">
               <h2 className="text-xl font-semibold mb-6">
                 Modifier la Checklist
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <FormField
+                  control={form.control}
+                  name="project"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">Projet</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Entrez le nom du projet"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="shift"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">Shift</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Entrez le shift"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="providerName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">
+                        Fournisseur
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Entrez le nom du fournisseur"
+                          {...field}
+                          className="border-subMain dark:border-border"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="shipmentType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">
+                        Type d'expédition
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="border-subMain dark:border-border">
+                            <SelectValue placeholder="Sélectionnez le type d'expédition" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="NORMALE">Normale</SelectItem>
+                          <SelectItem value="GROUPAGE">Groupage</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="deliveryType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">
+                        Type de livraison
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="border-subMain dark:border-border">
+                            <SelectValue placeholder="Sélectionnez le type de livraison" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="CONFORME">Conforme</SelectItem>
+                          <SelectItem value="NON_CONFORME">
+                            Non Conforme
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="codeRoute"
@@ -294,119 +426,144 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="categories"
-                  render={({ field }) => (
-                    <FormItem className="md:col-span-2">
-                      <FormLabel className="text-secondary-foreground font-semibold">
-                        Catégories d'Anomalies
-                      </FormLabel>
-                      <FormControl>
-                        <MultiCategorySelect
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500" />
-                    </FormItem>
-                  )}
-                />
+                {deliveryType === 'CONFORME' && (
+                  <FormField
+                    control={form.control}
+                    name="conformityComment"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel className="font-semibold">
+                          Commentaire de conformité
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Ajoutez un commentaire sur la conformité..."
+                            {...field}
+                            className="min-h-[100px] border-subMain dark:border-border"
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {deliveryType === 'NON_CONFORME' && (
+                  <FormField
+                    control={form.control}
+                    name="categories"
+                    render={({ field }) => (
+                      <FormItem className="md:col-span-2">
+                        <FormLabel className="text-secondary-foreground font-semibold">
+                          Catégories d'Anomalies
+                        </FormLabel>
+                        <FormControl>
+                          <MultiCategorySelect
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
             </div>
 
-            {selectedCategories.length > 0 && (
-              <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6 transition-all duration-300 ">
-                <h3 className="text-lg font-medium mb-4">
-                  Détails de l'Anomalie
-                </h3>
+            {deliveryType === 'NON_CONFORME' &&
+              selectedCategories.length > 0 && (
+                <div className="rounded-lg shadow-sm border border-subMain dark:border-border p-4 sm:p-6">
+                  <h3 className="text-lg font-medium mb-4">
+                    Détails de l'Anomalie
+                  </h3>
 
-                <FormField
-                  control={form.control}
-                  name="subcategories"
-                  render={({ field }) => (
-                    <FormItem className="mb-6">
-                      <FormLabel>Sous-catégories</FormLabel>
-                      <FormControl>
-                        <MultiSubcategorySelect
-                          value={field.value}
-                          onChange={(value) => {
-                            field.onChange(value);
-                            form.trigger('subcategories');
-                          }}
-                          categories={selectedCategories as AnomalyCategory[]}
+                  <FormField
+                    control={form.control}
+                    name="subcategories"
+                    render={({ field }) => (
+                      <FormItem className="mb-6">
+                        <FormLabel>Sous-catégories</FormLabel>
+                        <FormControl>
+                          <MultiSubcategorySelect
+                            value={field.value}
+                            onChange={(value) => {
+                              field.onChange(value);
+                              form.trigger('subcategories');
+                            }}
+                            categories={selectedCategories as AnomalyCategory[]}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+
+                  {selectedSubcategories.length > 0 && (
+                    <>
+                      <SummaryCard
+                        categories={selectedCategories as AnomalyCategory[]}
+                        subcategories={selectedSubcategories}
+                      />
+
+                      <div className="mt-6">
+                        <h4 className="font-medium mb-3">
+                          Détails des sous-catégories
+                        </h4>
+                        <FormField
+                          control={form.control}
+                          name="subcategoryDetails"
+                          render={({ field }) => (
+                            <FormItem>
+                              <SubcategoryDetailsList
+                                selectedCategories={
+                                  selectedCategories as AnomalyCategory[]
+                                }
+                                selectedSubcategories={selectedSubcategories}
+                                subcategoryDetails={field.value || []}
+                                onDetailChange={handleSubcategoryDetailsChange}
+                              />
+                              <FormMessage className="text-red-500" />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <FormMessage className="text-red-500" />
-                    </FormItem>
-                  )}
-                />
+                      </div>
 
-                {selectedSubcategories.length > 0 && (
-                  <>
-                    <SummaryCard
-                      categories={selectedCategories as AnomalyCategory[]}
-                      subcategories={selectedSubcategories}
-                    />
-
-                    <div className="mt-6">
-                      <h4 className="font-medium mb-3">
-                        Détails des sous-catégories
-                      </h4>
                       <FormField
                         control={form.control}
-                        name="subcategoryDetails"
+                        name="images"
                         render={({ field }) => (
-                          <FormItem>
-                            <SubcategoryDetailsList
-                              selectedCategories={
-                                selectedCategories as AnomalyCategory[]
-                              }
-                              selectedSubcategories={selectedSubcategories}
-                              subcategoryDetails={field.value || []}
-                              onDetailChange={handleSubcategoryDetailsChange}
-                            />
-                            <FormMessage className="text-red-500" />
+                          <FormItem className="mt-6">
+                            <FormLabel>Images</FormLabel>
+                            <FormControl>
+                              <AnomalyImagesUpload
+                                onFieldChange={field.onChange}
+                                imageUrls={field.value}
+                                setFiles={setFiles}
+                              />
+                            </FormControl>
+                            <FormMessage />
                           </FormItem>
                         )}
                       />
-                    </div>
-                  </>
-                )}
-
-                <FormField
-                  control={form.control}
-                  name="images"
-                  render={({ field }) => (
-                    <FormItem className="mt-6">
-                      <FormLabel>Images</FormLabel>
-                      <FormControl>
-                        <AnomalyImagesUpload
-                          onFieldChange={field.onChange}
-                          imageUrls={field.value}
-                          setFiles={setFiles}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                    </>
                   )}
-                />
-              </div>
-            )}
+                </div>
+              )}
 
             <div className="flex justify-end space-x-3">
               <Button
                 type="button"
                 variant="destructive"
                 onClick={() => router.back()}
-                className="px-6 rounded-md  w-full "
+                className="px-6 rounded-md w-full"
               >
                 <History className="mr-2 size-5" />
                 Annuler
               </Button>
               <SubmitButton
                 isLoading={isSubmitting}
-                className="sm:px-6 rounded-md w-full"
+                className="px-6 rounded-md w-full"
               >
                 <CircleCheck className="mr-2 size-5" />
                 Mettre à jour

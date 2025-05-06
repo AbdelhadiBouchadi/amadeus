@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import bcrypt from 'bcryptjs';
+import * as XLSX from 'xlsx';
 
 import {
   AnomalyCategory,
@@ -21,6 +22,7 @@ import {
   ETIQUETTAGE_PALETTE_HETEROGENE_SUBCATEGORY_MAP,
   PALETISATION_SUBCATEGORY_MAP,
 } from '../constants';
+import { DeliveryType, ShipmentType } from '@prisma/client';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -101,6 +103,22 @@ export const formatPaletisationSubcategory = (
 ): string => {
   return PALETISATION_SUBCATEGORY_MAP[subcategory]?.label || subcategory;
 };
+
+export function formatDeliveryType(type: DeliveryType): string {
+  const map: Record<DeliveryType, string> = {
+    CONFORME: 'Conforme',
+    NON_CONFORME: 'Non Conforme',
+  };
+  return map[type] || type;
+}
+
+export function formatShipmentType(type: ShipmentType): string {
+  const map: Record<ShipmentType, string> = {
+    GROUPAGE: 'Groupage',
+    NORMALE: 'Normale',
+  };
+  return map[type] || type;
+}
 
 // Get chapitreMLP and codeAnomalie values based on category and subcategory
 export const getChapitreAndCode = (
@@ -246,4 +264,47 @@ export function formatDate(date: string | Date): string {
 export function truncateText(text: string, maxLength: number): string {
   if (!text || text.length <= maxLength) return text;
   return `${text.substring(0, maxLength)}...`;
+}
+
+export function exportToExcel(data: any[], fileName: string) {
+  // Create a new workbook
+  const wb = XLSX.utils.book_new();
+
+  // Convert data to worksheet
+  const ws = XLSX.utils.json_to_sheet(data);
+
+  // Set column widths
+  const colWidths = [
+    { wch: 10 }, // ID
+    { wch: 15 }, // Code Fournisseur
+    { wch: 15 }, // Numéro BL
+    { wch: 12 }, // Matricule
+    { wch: 15 }, // Projet
+    { wch: 15 }, // Livraison
+    { wch: 12 }, // Remorque
+    { wch: 25 }, // Créé par
+    { wch: 20 }, // Créé le
+  ];
+  ws['!cols'] = colWidths;
+
+  // Style the header row
+  const headerStyle = {
+    font: { bold: true, color: { rgb: 'FFFFFF' } },
+    fill: { fgColor: { rgb: '4F46E5' } },
+    alignment: { horizontal: 'center' },
+  };
+
+  // Apply styles to the header row
+  const range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_col(C) + '1';
+    if (!ws[address]) continue;
+    ws[address].s = headerStyle;
+  }
+
+  // Add the worksheet to the workbook
+  XLSX.utils.book_append_sheet(wb, ws, 'Checklists');
+
+  // Write the workbook and trigger download
+  XLSX.writeFile(wb, `${fileName}.xlsx`);
 }

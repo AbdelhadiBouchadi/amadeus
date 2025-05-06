@@ -46,7 +46,6 @@ const SignupForm = () => {
     userId: string;
   }) {
     try {
-      // Call the registerUser function from the server actions
       setIsLoading(true);
 
       const formData = new FormData();
@@ -58,13 +57,11 @@ const SignupForm = () => {
 
       await registerUser(formData); // Register user on the server
 
-      // If signup is successful, log the user in (optional) or redirect
       toast.success('Votre compte a été créé avec succès');
       router.push('/sign-in'); // Redirect after successful signup
 
       setIsLoading(false);
     } catch (error) {
-      // Handle errors (e.g., user already exists)
       toast.error(
         'Une erreure est survenue lors de la création de votre compte'
       );

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import EDIDetailsModal from './EDIDetailsModal';
-import { SubcategoryDetail } from '@/types';
 
 interface EDIDetailsButtonProps {
   details: {

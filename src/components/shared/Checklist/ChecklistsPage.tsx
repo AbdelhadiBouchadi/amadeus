@@ -39,7 +39,7 @@ const ChecklistsPage: React.FC<ChecklistsPageProps> = ({
     .slice(0, 3)
     .map(([category]) => category as AnomalyCategory);
 
-  // Create stat boxes for display
+  // Create stat cards for display
   const statBoxes = [
     {
       id: 1,
