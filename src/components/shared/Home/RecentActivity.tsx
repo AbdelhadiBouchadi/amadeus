@@ -28,7 +28,7 @@ const RecentActivityCard: React.FC<RecentActivityCardProps> = ({
         {checklists.map((checklist) => {
           // Get the first category for display
           const primaryCategory =
-            checklist.categories[0] || AnomalyCategory.EDI;
+            checklist.categories![0] || AnomalyCategory.EDI;
           const [, textColor] = getCategoryColor(primaryCategory);
 
           return (
@@ -57,7 +57,7 @@ const RecentActivityCard: React.FC<RecentActivityCardProps> = ({
                   }`}
                 </p>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {checklist.categories.map((category, index) => {
+                  {checklist.categories!.map((category, index) => {
                     const [bgColor] = getCategoryColor(category);
                     return (
                       <span
