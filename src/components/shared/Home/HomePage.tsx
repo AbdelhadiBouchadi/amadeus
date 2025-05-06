@@ -11,6 +11,8 @@ import DashboardPieChart from './DashboardPieChart';
 import UserRoleChart from './UserRoleChart';
 import DashboardBarChart from './DashboardBarChart';
 import RecentActivityCard from './RecentActivity';
+import TimeSpentChart from './TimeSpentChart';
+import CoforAnomaliesChart from './CoforAnomaliesChart';
 
 interface HomePageProps {
   stats: DashboardStats;
@@ -154,15 +156,11 @@ const HomePage: React.FC<HomePageProps> = ({ stats }) => {
         className="grid grid-cols-1 lg:grid-cols-3 gap-6"
       >
         <motion.div variants={item}>
-          <UserRoleChart data={stats.userStats} />
+          <CoforAnomaliesChart data={stats.coforStats} />
         </motion.div>
 
         <motion.div variants={item} className="lg:col-span-2">
-          <DashboardBarChart
-            data={stats.monthlyStats.checklists}
-            label="Checklists par mois"
-            color="#3B82F6"
-          />
+          <TimeSpentChart data={stats.monthlyStats.timeSpent} />
         </motion.div>
       </motion.div>
 

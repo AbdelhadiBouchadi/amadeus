@@ -170,6 +170,29 @@ export interface ChecklistStats {
   byCategory: Record<AnomalyCategory, number>;
 }
 
+export interface UserStats {
+  monitors: number;
+  visitors: number;
+  admins: number;
+}
+
+export interface MonthlyStats {
+  checklists: number[];
+  users: number[];
+}
+
+// Add these interfaces
+export interface TimeSpentStats {
+  conforme: number[];
+  nonConforme: number[];
+}
+
+export interface CoforStats {
+  cofor: string;
+  count: number;
+}
+
+// Update DashboardStats
 export interface DashboardStats {
   userStats: {
     monitors: number;
@@ -180,17 +203,8 @@ export interface DashboardStats {
   monthlyStats: {
     users: number[];
     checklists: number[];
+    timeSpent: TimeSpentStats;
   };
+  coforStats: CoforStats[];
   recentChecklists: ChecklistData[];
-}
-
-export interface UserStats {
-  monitors: number;
-  visitors: number;
-  admins: number;
-}
-
-export interface MonthlyStats {
-  checklists: number[];
-  users: number[];
 }
