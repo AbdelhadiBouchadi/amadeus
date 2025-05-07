@@ -183,8 +183,8 @@ export interface MonthlyStats {
 
 // Add these interfaces
 export interface TimeSpentStats {
-  conforme: number[];
-  nonConforme: number[];
+  groupage: string[];
+  normale: string[];
 }
 
 export interface CoforStats {

@@ -34,14 +34,14 @@ const months = [
 const TimeSpentChart: React.FC<TimeSpentChartProps> = ({ data }) => {
   const chartData = months.map((month, index) => ({
     name: month,
-    conforme: Math.round(data.conforme[index] / 60), // Convert to minutes
-    nonConforme: Math.round(data.nonConforme[index] / 60),
+    groupage: Math.round(data.groupage[index] as any), // Convert to minutes
+    normale: Math.round(data.normale[index] as any),
   }));
 
   return (
     <Card className="bg-transparent border-subMain dark:border-border">
       <CardHeader>
-        <CardTitle>Temps moyen de création (minutes)</CardTitle>
+        <CardTitle>Temps moyen de création (en secondes)</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="w-full h-[400px] rounded-xl border border-subMain dark:border-border p-4">
@@ -54,15 +54,15 @@ const TimeSpentChart: React.FC<TimeSpentChartProps> = ({ data }) => {
               <Legend />
               <Line
                 type="monotone"
-                dataKey="conforme"
+                dataKey="groupage"
                 stroke="#22c55e"
-                name="Conforme"
+                name="Groupage"
               />
               <Line
                 type="monotone"
-                dataKey="nonConforme"
+                dataKey="normale"
                 stroke="#ef4444"
-                name="Non Conforme"
+                name="Normale"
               />
             </LineChart>
           </ResponsiveContainer>

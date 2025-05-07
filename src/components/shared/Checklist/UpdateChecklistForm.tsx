@@ -224,7 +224,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="project"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">Projet</FormLabel>
                       <FormControl>
                         <Input
@@ -242,7 +242,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="shift"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">Shift</FormLabel>
                       <FormControl>
                         <Input
@@ -260,7 +260,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="providerName"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">
                         Fournisseur
                       </FormLabel>
@@ -280,7 +280,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="shipmentType"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">
                         Type d'expédition
                       </FormLabel>
@@ -307,7 +307,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="deliveryType"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">
                         Type de livraison
                       </FormLabel>
@@ -336,7 +336,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="codeRoute"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">
                         Code Route
                       </FormLabel>
@@ -356,7 +356,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="cofor"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">
                         COFOR (Code Fournisseur)
                       </FormLabel>
@@ -376,7 +376,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="blNumber"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">Numéro BL</FormLabel>
                       <FormControl>
                         <Input
@@ -394,7 +394,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="reference"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">Référence</FormLabel>
                       <FormControl>
                         <Input
@@ -412,7 +412,7 @@ const UpdateChecklistForm: React.FC<UpdateChecklistFormProps> = ({
                   control={form.control}
                   name="matricule"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormLabel className="font-semibold">Matricule</FormLabel>
                       <FormControl>
                         <Input

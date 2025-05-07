@@ -16,43 +16,43 @@ import {
 
 async function getMonthlyTimeSpentStats() {
   const currentYear = new Date().getFullYear();
-  const monthlyStats: TimeSpentStats = {
-    conforme: Array(12).fill(0),
-    nonConforme: Array(12).fill(0),
+  const monthlyStats = {
+    groupage: Array(12).fill(0),
+    normale: Array(12).fill(0),
   };
 
   for (let month = 0; month < 12; month++) {
     const startDate = new Date(currentYear, month, 1);
     const endDate = new Date(currentYear, month + 1, 0);
 
-    const conformeStats = await db.checklist.aggregate({
+    const groupageStats = await db.checklist.aggregate({
       where: {
         createdAt: {
           gte: startDate,
           lte: endDate,
         },
-        deliveryType: 'CONFORME',
+        shipmentType: 'GROUPAGE',
       },
       _avg: {
         timeSpent: true,
       },
     });
 
-    const nonConformeStats = await db.checklist.aggregate({
+    const normaleStats = await db.checklist.aggregate({
       where: {
         createdAt: {
           gte: startDate,
           lte: endDate,
         },
-        deliveryType: 'NON_CONFORME',
+        shipmentType: 'NORMALE',
       },
       _avg: {
         timeSpent: true,
       },
     });
 
-    monthlyStats.conforme[month] = conformeStats._avg.timeSpent || 0;
-    monthlyStats.nonConforme[month] = nonConformeStats._avg.timeSpent || 0;
+    monthlyStats.groupage[month] = groupageStats._avg.timeSpent || 0;
+    monthlyStats.normale[month] = normaleStats._avg.timeSpent || 0;
   }
 
   return monthlyStats;
@@ -245,8 +245,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         users: Array(12).fill(0),
         checklists: Array(12).fill(0),
         timeSpent: {
-          conforme: Array(12).fill(0),
-          nonConforme: Array(12).fill(0),
+          groupage: Array(12).fill(0),
+          normale: Array(12).fill(0),
         },
       },
       recentChecklists: [],
