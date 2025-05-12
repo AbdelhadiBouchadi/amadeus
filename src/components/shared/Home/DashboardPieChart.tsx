@@ -10,25 +10,46 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AnomalyCategory } from '@/types';
 import { formatCategory } from '@/lib/utils';
+import { getChartData, processAnomalyData } from '@/lib/chartUtils';
 
 interface DashboardPieChartProps {
   data: Record<AnomalyCategory, number>;
 }
 
-const COLORS = [
-  '#3B82F6', // EDI - Blue
-  '#F97316', // EXPEDITION - Orange
-  '#14B8A6', // ETIQUETTAGE - Teal
-  '#A855F7', // ETIQUETTAGE_PALETTE_HOMOGENE - Purple
-  '#EAB308', // ETIQUETTAGE_PALETTE_HETEROGENE - Yellow
-  '#EF4444', // PALETISATION - Red
-];
+export function getCategoryColor(category: string): string {
+  switch (category) {
+    case AnomalyCategory.EDI:
+      return '#3B82F6'; // Blue
+    case AnomalyCategory.EXPEDITION:
+      return '#F97316'; // Orange
+    case AnomalyCategory.ETIQUETTAGE:
+    case AnomalyCategory.ETIQUETTAGE_PALETTE_HOMOGENE:
+    case AnomalyCategory.ETIQUETTAGE_PALETTE_HETEROGENE:
+      return '#14B8A6'; // Teal
+    case AnomalyCategory.PALETISATION:
+      return '#EF4444'; // Red
+    default:
+      return '#9CA3AF'; // Gray
+  }
+}
 
 const DashboardPieChart: React.FC<DashboardPieChartProps> = ({ data }) => {
-  const chartData = Object.entries(data).map(([category, value]) => ({
-    name: formatCategory(category as AnomalyCategory),
-    value,
-  }));
+  const processedData = processAnomalyData(data);
+
+  // Convert processed data to chart-ready format
+  const chartData = getChartData(processedData);
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white dark:bg-gray-800 p-2 border border-gray-200 dark:border-gray-700 rounded shadow-sm">
+          <p className="font-medium">{payload[0].name}</p>
+          <p className="text-sm">{`Occurrences: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Card className="bg-transparent border-subMain dark:border-border">
@@ -51,11 +72,11 @@ const DashboardPieChart: React.FC<DashboardPieChartProps> = ({ data }) => {
                 {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
+                    fill={getCategoryColor(entry.category)}
                   />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>

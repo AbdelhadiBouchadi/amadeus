@@ -8,8 +8,6 @@ import { getCategoryColor } from '@/lib/utils';
 import StatCard from './StatCard';
 import DashboardAreaChart from './DashboardAreaChart';
 import DashboardPieChart from './DashboardPieChart';
-import UserRoleChart from './UserRoleChart';
-import DashboardBarChart from './DashboardBarChart';
 import RecentActivityCard from './RecentActivity';
 import TimeSpentChart from './TimeSpentChart';
 import CoforAnomaliesChart from './CoforAnomaliesChart';
